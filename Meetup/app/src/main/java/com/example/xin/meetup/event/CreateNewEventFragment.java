@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -196,7 +195,7 @@ public class CreateNewEventFragment extends Fragment {
 //    }
 
     public void goBackToEventList() {
-        Intent intent = new Intent(getContext(), YourEventListActivity.class);
+        Intent intent = new Intent(getContext(), YourEventListFragment.class);
         startActivity(intent);
     }
 

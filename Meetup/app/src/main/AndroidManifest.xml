@@ -50,9 +50,6 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" />
-        <activity
-            android:name=".event.YourEventListActivity">
-        </activity>
     </application>
 
 </manifest>

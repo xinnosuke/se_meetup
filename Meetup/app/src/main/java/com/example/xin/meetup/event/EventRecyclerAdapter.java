@@ -1,6 +1,8 @@
 package com.example.xin.meetup.event;
 
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +34,10 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
         public Event event;
-        public TextView textViewEventName;
-        public TextView textViewDate;
-        public TextView textViewLocation;
-        public ImageView thumbnail;
+        public AppCompatTextView textViewEventName;
+        public AppCompatTextView textViewDate;
+        public AppCompatTextView textViewLocation;
+        public AppCompatImageView thumbnail;
 
 
         public EventViewHolder(View view, final CustomItemClickListener listener) {

@@ -18,7 +18,7 @@
             android:layout_marginEnd="@dimen/activity_padding_horizontal"
             android:contentDescription="@string/event_picture"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher"/>
+            android:background="@color/colorYellow"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/event_name"

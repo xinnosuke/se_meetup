@@ -1,0 +1,25 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/event_registered_frame"
+    tools:context="com.example.xin.meetup.event.RegisteredEventFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_registered_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/empty_view_registered"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:text="No Event"
+        android:textSize="20sp"
+        android:layout_margin="40dp"
+        android:visibility="invisible"/>
+
+</FrameLayout>

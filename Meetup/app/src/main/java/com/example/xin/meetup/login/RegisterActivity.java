@@ -108,20 +108,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             userExist();
             return;
         }
-
-        // TODO: change delay
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        //onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
     }
-
 
     public void onSignupSuccess() {
         appCompatButtonRegister.setEnabled(true);
