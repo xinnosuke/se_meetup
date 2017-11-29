@@ -80,9 +80,9 @@ public class CreateNewEventFragment extends Fragment {
 
         Bundle bundle = getActivity().getIntent().getExtras();
         userId = bundle.getInt("UserId");
-        // Spinner element
+
         Spinner spinner = rootView.findViewById(R.id.spinner_event_category);
-        // Spinner Drop down elements
+
         final List<String> categories = new ArrayList<>();
         categories.add("Select");
         categories.add(Event.Category.Art.toString());
@@ -91,13 +91,11 @@ public class CreateNewEventFragment extends Fragment {
         categories.add(Event.Category.Movie.toString());
         categories.add(Event.Category.Travel.toString());
         categories.add(Event.Category.Book.toString());
-        // Creating adapter for spinner
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categories);
-        // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
-        // Spinner click listener
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

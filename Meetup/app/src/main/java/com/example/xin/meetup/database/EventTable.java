@@ -5,9 +5,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
+import java.util.Locale;
 
 public class EventTable {
 
@@ -54,7 +57,6 @@ public class EventTable {
     }
 
     public boolean organizerHasEvent(final int organizerId) {
-        boolean hasEvent = true;
         final SQLiteDatabase db = helper.getReadableDatabase();
         final String count = "SELECT count(*) FROM " + TABLE_NAME + " WHERE " + EVENT_ORGANIZER_ID + " = " + organizerId;
 
@@ -86,18 +88,7 @@ public class EventTable {
     }
 
     public List<Event> getEventByCategory(final Event.Category category) {
-        final String[] columns = {
-                COLUMN_EVENT_ID,
-                COLUMN_EVENT_NAME,
-                COLUMN_EVENT_DATE,
-                COLUMN_EVENT_TIME,
-                COLUMN_EVENT_CAPACITY,
-                COLUMN_EVENT_CATEGORY,
-                COLUMN_EVENT_LOCATION,
-                EVENT_ORGANIZER_ID,
-                COLUMN_EVENT_DESCRIPTION,
-                COLUMN_EVENT_STATUS
-        };
+        final String[] columns = {"*"};
 
         List<Event> eventList = new ArrayList<>();
         final SQLiteDatabase db = helper.getReadableDatabase();
@@ -126,6 +117,68 @@ public class EventTable {
                 event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
                 event.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION)));
                 event.setStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_STATUS))));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return eventList;
+    }
+
+    public List<Event> getEventByCategoryAndDate(final Event.Category category, int range) {
+        final String[] columns = {
+                COLUMN_EVENT_ID,
+                COLUMN_EVENT_NAME,
+                COLUMN_EVENT_DATE,
+                COLUMN_EVENT_TIME,
+                COLUMN_EVENT_CAPACITY,
+                COLUMN_EVENT_CATEGORY,
+                COLUMN_EVENT_LOCATION,
+                EVENT_ORGANIZER_ID,
+                COLUMN_EVENT_DESCRIPTION,
+                COLUMN_EVENT_STATUS
+        };
+
+        final String myFormat = "yyyy-MM-dd";
+        final SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        final Date now = new Date();
+        final String today = sdf.format(now);
+
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.DAY_OF_YEAR, range);
+        Date date = calendar.getTime();
+        final String futureDate = sdf.format(date);
+
+        List<Event> eventList = new ArrayList<>();
+        final SQLiteDatabase db = helper.getReadableDatabase();
+        final String selection = COLUMN_EVENT_CATEGORY + " = ? AND " + COLUMN_EVENT_DATE + " > ? AND " + COLUMN_EVENT_DATE + " < ?";
+        final String[] selectArgs = {category.toString(), today, futureDate};
+        final String order = COLUMN_EVENT_DATE;
+
+        Cursor cursor = db.query(TABLE_NAME, //Table to query
+                columns,                     //columns to return
+                selection,                   //columns for the WHERE clause
+                selectArgs,                  //The values for the WHERE clause
+                null,                //group the rows
+                null,                 //filter by row groups
+                order); //The sort order
+
+        if (cursor.moveToFirst()) {
+            do {
+                Event event = new Event();
+                event.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_ID))));
+                event.setName(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_NAME)));
+                event.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE)));
+                event.setTime(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TIME)));
+                event.setCapacity(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY))));
+                event.setCategory(Event.Category.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CATEGORY))));
+                event.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_LOCATION)));
+                event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
+                event.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION)));
+                event.setStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_STATUS))));
+                eventList.add(event);
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -273,7 +326,7 @@ public class EventTable {
 
         final int icount = mcursor.getInt(0);
 
-        return  icount == 0;
+        return  icount <= 0;
     }
 
     public Event getEventById(final int eventId) {
@@ -301,7 +354,7 @@ public class EventTable {
                 selectionArgs,               //The values for the WHERE clause
                 null,               //group the rows
                 null,                //filter by row groups
-                null);                  //The sort order
+                null);               //The sort order
 
         cursor.moveToFirst();
         Event event = new Event();

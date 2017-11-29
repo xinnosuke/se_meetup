@@ -21,6 +21,7 @@ import com.example.xin.meetup.event.CustomItemClickListener;
 import com.example.xin.meetup.event.EventPageFragment;
 import com.example.xin.meetup.event.EventRecyclerAdapter;
 import com.example.xin.meetup.event.RegisteredEventFragment;
+import com.example.xin.meetup.event.SearchForEventsFragment;
 import com.example.xin.meetup.event.YourEventListFragment;
 
 import java.util.ArrayList;
@@ -53,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
                             .replace(R.id.frame_fragment, fragment2)
                             .commit();
                     return true;
-//                case R.id.navigation_search_for_events:
-//                    Fragment eventFragment3 = new ();
-//                    eventFragment3.setArguments(bundle);
-//                    fragmentManager.beginTransaction()
-//                            .replace(R.id.frame_fragment, eventFragment3)
-//                            .commit();
-//                    return true;
+                case R.id.navigation_search_for_events:
+                    Fragment eventFragment3 = new SearchForEventsFragment();
+                    eventFragment3.setArguments(bundle);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frame_fragment, eventFragment3)
+                            .commit();
+                    return true;
             }
             return false;
         }
