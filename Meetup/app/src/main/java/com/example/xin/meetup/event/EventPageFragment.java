@@ -2,26 +2,32 @@ package com.example.xin.meetup.event;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.xin.meetup.*;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
+import com.example.xin.meetup.login.LoginActivity;
 
 public class EventPageFragment extends Fragment {
     private static final String EVENT_ID = "EventId";
+    private static final String USER_TYPE = "UserType";
     private int eventId;
+    private String userType;
 
     public EventPageFragment() {
     }
 
-    public static EventPageFragment newInstance(int eventId) {
-        EventPageFragment fragment = new EventPageFragment();
-        Bundle args = new Bundle();
+    public static EventPageFragment newInstance(final int eventId) {
+        final EventPageFragment fragment = new EventPageFragment();
+        final Bundle args = new Bundle();
         args.putInt(EVENT_ID, eventId);
         fragment.setArguments(args);
 
@@ -29,21 +35,22 @@ public class EventPageFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         eventId = getArguments().getInt(EVENT_ID);
+        userType = getArguments().getString(USER_TYPE);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final DBHelper dbHelper = new DBHelper(getContext());
         final Event event = dbHelper.eventTable.getEventById(eventId);
         final int organizerId = event.getOrganizerId();
-        String organizerName = dbHelper.userTable.getUserName(organizerId);
-        String dateTime = event.getDate() + " " + event.getTime();
-        String eventName = event.getName();
+        final String organizerName = dbHelper.userTable.getUserName(organizerId);
+        final String dateTime = event.getDate() + " " + event.getTime();
+        final String eventName = event.getName();
 
-        View rootView = inflater.inflate(R.layout.fragment_event_page, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_event_page, container, false);
         final ImageView imageView = rootView.findViewById(R.id.event_image);
         final TextView eventNameTextView = rootView.findViewById(R.id.event_title);
         final TextView locationTextView = rootView.findViewById(R.id.event_location_textView);
@@ -61,10 +68,24 @@ public class EventPageFragment extends Fragment {
         organizerTextView.setText(organizerName);
         descriptionTextView.setText(event.getDescription());
 
+        if (userType.equals("user")) {
+            final FloatingActionButton fb = rootView.findViewById(R.id.fab_rsvp);
+            fb.setVisibility(View.VISIBLE);
+            fb.bringToFront();
+            fb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DBHelper dbHelper = DBHelper.getInstance(getContext());
+                    dbHelper.guestTable.addGuest(eventId, LoginActivity.getUserId());
+                    Toast.makeText(getContext(), "Woohoo!", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+
         return rootView;
     }
 
-//     TODO: Rename method, update argument and hook method into UI event
 //    public void onButtonPressed(Uri uri) {
 //        if (mListener != null) {
 //            mListener.onFragmentInteraction(uri);
@@ -89,7 +110,6 @@ public class EventPageFragment extends Fragment {
 //    }
 //
 //    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
 }

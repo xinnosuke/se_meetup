@@ -1,8 +1,7 @@
-package com.example.xin.meetup.event;
+package com.example.xin.meetup.event.as_user;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,63 +11,68 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
+import com.example.xin.meetup.event.CustomItemClickListener;
+import com.example.xin.meetup.event.EventPageFragment;
+import com.example.xin.meetup.event.EventRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResultListFragment extends Fragment {
 
+public class RegisteredEventFragment extends Fragment {
+
+    private int userId;
     private List<Event> listEvent;
     private DBHelper dbHelper;
-    private String category;
-    private int range;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final Bundle bundle = getArguments();
         if (bundle != null) {
-            category = bundle.getString("Category");
-            range = bundle.getInt("Range");
+            userId = bundle.getInt("UserId");
         }
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_event_list, container, false);
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
+        final View rootView = inflater.inflate(R.layout.fragment_registered_event, container, false);
 
-        dbHelper = new DBHelper(getContext());
+        dbHelper = DBHelper.getInstance(getContext());
         listEvent = new ArrayList<>();
 
         getDataFromSQLite();
 
-        final TextView noEventTextView = rootView.findViewById(R.id.empty_view);
+        final TextView noEventTextView = rootView.findViewById(R.id.empty_view_registered);
 
         final CustomItemClickListener listener = new CustomItemClickListener() {
-            public void onItemClick(View view, int position, int eventId, int userId) {
+            public void onItemClick(final View view, final int position, final int eventId, final int userId) {
                 final Bundle bundle1 = new Bundle();
                 bundle1.putInt("EventId", eventId);
-                bundle1.putInt("OrganizerId", userId);
+                bundle1.putInt("UserId", userId);
+
+                Toast.makeText(getContext(), "EventId " + eventId, Toast.LENGTH_SHORT).show();
 
                 final FragmentManager fragmentManager = getFragmentManager();
                 final Fragment eventPageFragment = new EventPageFragment();
                 eventPageFragment.setArguments(bundle1);
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.event_list_fragment, eventPageFragment)
+                        .replace(R.id.event_registered_frame, eventPageFragment)
                         .addToBackStack(null)
                         .commit();
             }
         };
 
         final EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(listEvent, dbHelper, getFragmentManager(), listener);
-        final RecyclerView recyclerViewEvent = rootView.findViewById(R.id.recycler_view_event);
+        final RecyclerView recyclerViewEvent = rootView.findViewById(R.id.recycler_view_registered_event);
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerViewEvent.setLayoutManager(mLayoutManager);
         recyclerViewEvent.setItemAnimator(new DefaultItemAnimator());
@@ -84,16 +88,20 @@ public class SearchResultListFragment extends Fragment {
             noEventTextView.setVisibility(View.INVISIBLE);
         }
 
-        final FloatingActionButton fab = rootView.findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
-
         return rootView;
     }
 
     private void getDataFromSQLite() {
-        if (!dbHelper.eventTable.tableEmpty()) {
+        if (!dbHelper.guestTable.tableEmpty()) {
+            List<Integer> listEventId = new ArrayList<>();
+            listEventId.addAll(dbHelper.guestTable.getMyEvents(userId));
             listEvent.clear();
-            listEvent.addAll(dbHelper.eventTable.getEventByCategoryAndDate(Event.Category.valueOf(category), range));
+
+            if (!listEventId.isEmpty()) {
+                for (Integer eventId : listEventId) {
+                    listEvent.add(dbHelper.eventTable.getEventById(eventId));
+                }
+            }
         }
     }
 }

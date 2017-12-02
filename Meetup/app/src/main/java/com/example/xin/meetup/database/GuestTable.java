@@ -9,58 +9,51 @@ import java.util.List;
 
 public class GuestTable {
     private static final String TABLE_GUEST = "guest_list";
-
-    // User Table Columns names
     private static final String COLUMN_EVENT_ID = "event_id";
     private static final String COLUMN_GUEST_ID = "guest_id";
 
-    // create table sql query
     private String CREATE_GUEST_LIST_TABLE = "CREATE TABLE " + TABLE_GUEST + "("
             + COLUMN_EVENT_ID + " INTEGER, "
             + COLUMN_GUEST_ID + " INTEGER" + ")";
 
-    // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_GUEST;
 
     private final SQLiteOpenHelper helper;
 
-    public GuestTable(SQLiteOpenHelper helper) {
+    public GuestTable(final SQLiteOpenHelper helper) {
         this.helper = helper;
     }
 
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(final SQLiteDatabase db) {
         db.execSQL(CREATE_GUEST_LIST_TABLE);
     }
 
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         db.execSQL(DROP_USER_TABLE);
-        // Create tables again
         onCreate(db);
     }
 
-    public void addGuest(int eventId, int guestId) {
-        SQLiteDatabase db = helper.getWritableDatabase();
+    public void addGuest(final int eventId, final int guestId) {
+        final SQLiteDatabase db = helper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT_ID, String.valueOf(eventId));
         values.put(COLUMN_GUEST_ID, String.valueOf(guestId));
 
-        // Inserting Row
         db.insert(TABLE_GUEST, null, values);
         db.close();
     }
 
-    public List<Integer> getGuestIdByEvent(int eventId) {
-        // array of columns to fetch
-        String[] columns = {
+    public List<Integer> getGuestIdByEvent(final int eventId) {
+       final String[] columns = {
                 COLUMN_EVENT_ID,
                 COLUMN_GUEST_ID,
         };
 
-        List<Integer> guestList = new ArrayList<>();
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String selection = COLUMN_EVENT_ID + " = ?";
-        String[] selectArgs = {String.valueOf(eventId)};
+        final List<Integer> guestList = new ArrayList<>();
+        final SQLiteDatabase db = helper.getReadableDatabase();
+        final String selection = COLUMN_EVENT_ID + " = ?";
+        final String[] selectArgs = {String.valueOf(eventId)};
 
         Cursor cursor = db.query(TABLE_GUEST, //Table to query
                 columns,          //columns to return
@@ -70,7 +63,6 @@ public class GuestTable {
                 null,      //filter by row groups
                 null);    //The sort order
 
-        // Traversing through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 guestList.add(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_GUEST_ID))));
@@ -79,20 +71,19 @@ public class GuestTable {
         cursor.close();
         db.close();
 
-        // return user list
         return guestList;
     }
 
-    public List<Integer> getMyEvents(int guestId) {
-        String[] columns = {
+    public List<Integer> getMyEvents(final int guestId) {
+        final String[] columns = {
                 COLUMN_EVENT_ID,
                 COLUMN_GUEST_ID,
         };
 
-        List<Integer> eventList = new ArrayList<>();
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String selection = COLUMN_GUEST_ID + " = ?";
-        String[] selectArgs = {String.valueOf(guestId)};
+        final List<Integer> eventList = new ArrayList<>();
+        final SQLiteDatabase db = helper.getReadableDatabase();
+        final String selection = COLUMN_GUEST_ID + " = ?";
+        final String[] selectArgs = {String.valueOf(guestId)};
 
         Cursor cursor = db.query(TABLE_GUEST, //Table to query
                 columns,          //columns to return
@@ -102,7 +93,6 @@ public class GuestTable {
                 null,      //filter by row groups
                 null);    //The sort order
 
-        // Traversing through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 eventList.add(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_GUEST_ID))));
@@ -111,24 +101,20 @@ public class GuestTable {
         cursor.close();
         db.close();
 
-        // return user list
         return eventList;
     }
 
-    public void deleteGuest(int guestId) {
-        SQLiteDatabase db = helper.getWritableDatabase();
+    public void deleteGuest(final int guestId) {
+        final SQLiteDatabase db = helper.getWritableDatabase();
         db.delete(TABLE_GUEST, COLUMN_EVENT_ID + " = ?", new String[]{String.valueOf(guestId)});
         db.close();
     }
 
-    public boolean checkGuest(int guestId) {
-        // array of columns to fetch
-        String[] columns = {COLUMN_EVENT_ID};
-        SQLiteDatabase db = helper.getReadableDatabase();
-        // selection criteria
-        String selection = COLUMN_GUEST_ID + " = ?";
-        // selection argument
-        String[] selectionArgs = {String.valueOf(guestId)};
+    public boolean hasRegistered(final int guestId, final int eventId) {
+        final String[] columns = {COLUMN_EVENT_ID, COLUMN_GUEST_ID};
+        final SQLiteDatabase db = helper.getReadableDatabase();
+        final String selection = COLUMN_EVENT_ID + " = ? AND " +COLUMN_GUEST_ID + " = ?";
+        final String[] selectionArgs = {String.valueOf(guestId)};
 
         Cursor cursor = db.query(TABLE_GUEST, //Table to query
                 columns,                    //columns to return
@@ -137,15 +123,12 @@ public class GuestTable {
                 null,                       //group the rows
                 null,                      //filter by row groups
                 null);                      //The sort order
-        int cursorCount = cursor.getCount();
+
+        final int cursorCount = cursor.getCount();
         cursor.close();
         db.close();
 
-        if (cursorCount > 0) {
-            return true;
-        }
-
-        return false;
+        return cursorCount <= 0;
     }
 
     public boolean tableEmpty() {

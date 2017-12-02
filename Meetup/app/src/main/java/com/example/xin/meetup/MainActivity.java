@@ -1,31 +1,16 @@
 package com.example.xin.meetup;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.xin.meetup.database.DBHelper;
-import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.event.CustomItemClickListener;
-import com.example.xin.meetup.event.EventPageFragment;
-import com.example.xin.meetup.event.EventRecyclerAdapter;
-import com.example.xin.meetup.event.RegisteredEventFragment;
-import com.example.xin.meetup.event.SearchForEventsFragment;
-import com.example.xin.meetup.event.YourEventListFragment;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.xin.meetup.event.as_user.RegisteredEventFragment;
+import com.example.xin.meetup.event.as_user.SearchForEventsFragment;
+import com.example.xin.meetup.event.as_organizer.YourEventListFragment;
 
 public class MainActivity extends AppCompatActivity {
 

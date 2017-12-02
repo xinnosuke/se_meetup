@@ -10,12 +10,13 @@
     <color name="colorTextUserInput">#404040</color>
     <color name="colorTextHint">#51d8c7</color>
     <color name="colorTopBar">#80ced6</color>
-    <color name="colorSecondBar">#737373</color>
+    <color name="colorSecondBar">#29a3a3</color>
     <color name="colorBottomBar">#333399</color>
     <color name="colorAccent">#ff9900</color>
     <color name="bg_row_background">#fa315b</color>
     <color name="item_name">#535353</color>
     <color name="description">#a9a9a9</color>
     <color name="colorLightGrey">#c1bcab</color>
+    <color name="colorEventPageBackground">#f4f3f0</color>
 
 </resources>

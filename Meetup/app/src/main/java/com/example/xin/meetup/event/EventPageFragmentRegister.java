@@ -25,7 +25,7 @@ public class EventPageFragmentRegister extends Fragment {
     public EventPageFragmentRegister() {
     }
 
-    public static EventPageFragmentRegister newInstance(int eventId) {
+    public static EventPageFragmentRegister newInstance(final int eventId) {
         EventPageFragmentRegister fragment = new EventPageFragmentRegister();
         Bundle args = new Bundle();
         args.putInt(EVENT_ID, eventId);
@@ -35,21 +35,21 @@ public class EventPageFragmentRegister extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         eventId = getArguments().getInt(EVENT_ID);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        dbHelper = new DBHelper(getContext());
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        dbHelper = DBHelper.getInstance(getContext());
         final Event event = dbHelper.eventTable.getEventById(eventId);
         final int organizerId = event.getOrganizerId();
-        String organizerName = dbHelper.userTable.getUserName(organizerId);
-        String dateTime = event.getDate() + " " + event.getTime();
-        String eventName = event.getName();
+        final String organizerName = dbHelper.userTable.getUserName(organizerId);
+        final String dateTime = event.getDate() + " " + event.getTime();
+        final String eventName = event.getName();
 
-        View rootView = inflater.inflate(R.layout.fragment_event_page, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_event_page, container, false);
         final ImageView imageView = rootView.findViewById(R.id.event_image);
         final TextView eventNameTextView = rootView.findViewById(R.id.event_title);
         final TextView locationTextView = rootView.findViewById(R.id.event_location_textView);
@@ -70,7 +70,7 @@ public class EventPageFragmentRegister extends Fragment {
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 dbHelper.guestTable.addGuest(eventId, LoginActivity.userId);
                 Toast.makeText(getContext(), "Registered! ", Toast.LENGTH_SHORT).show();
             }
@@ -79,7 +79,6 @@ public class EventPageFragmentRegister extends Fragment {
         return rootView;
     }
 
-//     TODO: Rename method, update argument and hook method into UI event
 //    public void onButtonPressed(Uri uri) {
 //        if (mListener != null) {
 //            mListener.onFragmentInteraction(uri);
@@ -104,7 +103,6 @@ public class EventPageFragmentRegister extends Fragment {
 //    }
 //
 //    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
 }

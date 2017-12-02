@@ -25,7 +25,8 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     CustomItemClickListener listener;
 
 
-    public EventRecyclerAdapter(List<Event> listEvent, DBHelper databaseHelper, FragmentManager fragmentManager, CustomItemClickListener listener) {
+    public EventRecyclerAdapter(final List<Event> listEvent, final DBHelper databaseHelper,
+                                final FragmentManager fragmentManager, final CustomItemClickListener listener) {
         this.listEvent = listEvent;
         dbHelper = databaseHelper;
         this.fragmentManager = fragmentManager;
@@ -40,7 +41,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         public AppCompatImageView thumbnail;
 
 
-        public EventViewHolder(View view, final CustomItemClickListener listener) {
+        public EventViewHolder(final View view, final CustomItemClickListener listener) {
             super(view);
 
             textViewEventName = view.findViewById(R.id.event_name);
@@ -50,26 +51,27 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(final View view) {
                     listener.onItemClick(view, getAdapterPosition(), eventId, organizerId);
+                    final int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        EventRecyclerAdapter.this.notifyDataSetChanged();
+                    }
                 }
             });
         }
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
-    public EventRecyclerAdapter.EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // inflating recycler item view
-        View itemView = LayoutInflater.from(parent.getContext())
+    public EventRecyclerAdapter.EventViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+        final View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_list_item, parent, false);
 
         return new EventViewHolder(itemView, listener);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(EventRecyclerAdapter.EventViewHolder holder, int position) {
+    public void onBindViewHolder(final EventRecyclerAdapter.EventViewHolder holder, final int position) {
         eventId = listEvent.get(position).getId();
         organizerId = listEvent.get(position).getOrganizerId();
         holder.event = listEvent.get(position);
@@ -84,7 +86,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
     }
 }
 

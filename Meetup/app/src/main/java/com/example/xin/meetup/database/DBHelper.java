@@ -6,13 +6,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    // Database Version
     private static final int DATABASE_VERSION = 2;
-    // Database Name
+    private static DBHelper dbhelper;
     private static final String DATABASE_NAME = "DBHelper.db";
     public final UserTable userTable;
     public final EventTable eventTable;
     public final GuestTable guestTable;
+
+    public static synchronized DBHelper getInstance(final Context context) {
+        if (dbhelper == null) {
+            dbhelper = new DBHelper(context.getApplicationContext());
+        }
+        return dbhelper;
+    }
 
     public DBHelper(final Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

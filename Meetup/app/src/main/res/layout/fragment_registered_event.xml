@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/event_registered_frame"
-    tools:context="com.example.xin.meetup.event.RegisteredEventFragment">
+    tools:context="com.example.xin.meetup.event.as_user.RegisteredEventFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_registered_event"

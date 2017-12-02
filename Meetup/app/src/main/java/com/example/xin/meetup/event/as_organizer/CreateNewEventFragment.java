@@ -1,4 +1,4 @@
-package com.example.xin.meetup.event;
+package com.example.xin.meetup.event.as_organizer;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -58,8 +58,8 @@ public class CreateNewEventFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_create_activity, container, false);
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, final Bundle savedInstanceState) {
+        final View rootView = inflater.inflate(R.layout.fragment_create_activity, container, false);
         textInputLayoutEventName = rootView.findViewById(R.id.textInputLayoutEventName);
         textInputLayoutLocation = rootView.findViewById(R.id.textInputLayoutLocation);
         textInputLayoutOrganizer = rootView.findViewById(R.id.textInputLayoutOrganizer);
@@ -78,10 +78,10 @@ public class CreateNewEventFragment extends Fragment {
         appCompatButtonCreateEvent = rootView.findViewById(R.id.appCompatButtonCreateEvent);
         appCompatTextViewCancel = rootView.findViewById(R.id.appCompatTextViewCancel);
 
-        Bundle bundle = getActivity().getIntent().getExtras();
+        final Bundle bundle = getActivity().getIntent().getExtras();
         userId = bundle.getInt("UserId");
 
-        Spinner spinner = rootView.findViewById(R.id.spinner_event_category);
+        final Spinner spinner = rootView.findViewById(R.id.spinner_event_category);
 
         final List<String> categories = new ArrayList<>();
         categories.add("Select");
@@ -92,14 +92,13 @@ public class CreateNewEventFragment extends Fragment {
         categories.add(Event.Category.Travel.toString());
         categories.add(Event.Category.Book.toString());
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categories);
+        final ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                // On selecting a spinner item
                 category = adapterView.getItemAtPosition(position).toString();
             }
             @Override
@@ -149,7 +148,7 @@ public class CreateNewEventFragment extends Fragment {
 
     private void initObjects() {
         inputValidation = new InputValidation(getActivity());
-        databaseHelper = new DBHelper(getActivity());
+        databaseHelper = DBHelper.getInstance(getActivity());
         event = new Event();
     }
 
@@ -163,12 +162,12 @@ public class CreateNewEventFragment extends Fragment {
             return false;
         }
 
-        String eventName = textInputEditTextEventName.getText().toString().trim();
-        String location = textInputEditTextLocation.getText().toString().trim();
-        int capacity = Integer.parseInt(textInputEditTextCapacity.getText().toString().trim());
-        String date = buttonTextDate;
-        String time = buttonTextTime;
-        String description = textInputEditTextDescription.getText().toString().trim();
+        final String eventName = textInputEditTextEventName.getText().toString().trim();
+        final String location = textInputEditTextLocation.getText().toString().trim();
+        final int capacity = Integer.parseInt(textInputEditTextCapacity.getText().toString().trim());
+        final String date = buttonTextDate;
+        final String time = buttonTextTime;
+        final String description = textInputEditTextDescription.getText().toString().trim();
 
         event.setName(eventName);
         event.setLocation(location);
@@ -193,7 +192,7 @@ public class CreateNewEventFragment extends Fragment {
 //    }
 
     public void goBackToEventList() {
-        Intent intent = new Intent(getContext(), YourEventListFragment.class);
+        final Intent intent = new Intent(getContext(), YourEventListFragment.class);
         startActivity(intent);
     }
 
@@ -215,10 +214,9 @@ public class CreateNewEventFragment extends Fragment {
         return valid;
     }
 
-    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
         @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            // TODO Auto-generated method stub
+        public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -227,20 +225,19 @@ public class CreateNewEventFragment extends Fragment {
     };
 
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
     }
 
     private void updateDateLabel() {
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        final String myFormat = "yyyy-MM-dd";
+        final SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         buttonTextDate = sdf.format(myCalendar.getTime());
         buttonDate.setText(buttonTextDate);
 
     }
 
-    TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
+    final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
         @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        public void onTimeSet(final TimePicker view, final int hourOfDay, final int minute) {
             calendarTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             calendarTime.set(Calendar.MINUTE, minute);
             updateTimeLabel();
@@ -248,8 +245,8 @@ public class CreateNewEventFragment extends Fragment {
     };
 
     private void updateTimeLabel() {
-        String myFormat = "hh:mm a";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        final String myFormat = "hh:mm a";
+        final SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         buttonTextTime = sdf.format(calendarTime.getTime());
         buttonTime.setText(buttonTextTime);
     }
