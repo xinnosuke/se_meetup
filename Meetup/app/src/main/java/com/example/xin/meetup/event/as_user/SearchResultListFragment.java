@@ -16,9 +16,9 @@ import android.widget.TextView;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.event.CustomItemClickListener;
-import com.example.xin.meetup.event.EventPageFragment;
-import com.example.xin.meetup.event.EventRecyclerAdapter;
+import com.example.xin.meetup.main.CustomItemClickListener;
+import com.example.xin.meetup.main.EventPageFragment;
+import com.example.xin.meetup.main.EventRecyclerAdapter;
 import com.example.xin.meetup.login.LoginActivity;
 
 import java.util.ArrayList;

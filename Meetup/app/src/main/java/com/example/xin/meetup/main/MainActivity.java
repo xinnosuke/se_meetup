@@ -1,4 +1,4 @@
-package com.example.xin.meetup;
+package com.example.xin.meetup.main;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.example.xin.meetup.R;
 import com.example.xin.meetup.event.as_user.RegisteredEventFragment;
 import com.example.xin.meetup.event.as_user.SearchForEventsFragment;
 import com.example.xin.meetup.event.as_organizer.YourEventListFragment;

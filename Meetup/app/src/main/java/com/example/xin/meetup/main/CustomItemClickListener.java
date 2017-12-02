@@ -1,4 +1,4 @@
-package com.example.xin.meetup.event;
+package com.example.xin.meetup.main;
 
 import android.view.View;
 

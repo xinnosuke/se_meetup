@@ -11,7 +11,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.xin.meetup.MainActivity;
+import com.example.xin.meetup.main.MainActivity;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Hashing;

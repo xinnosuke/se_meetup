@@ -45,10 +45,10 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".event.MapsActivity"
+            android:name=".main.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:label="@string/title_activity_main" />
     </application>
 

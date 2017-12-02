@@ -172,7 +172,7 @@ public class EventTable {
                 event.setName(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_NAME)));
                 event.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE)));
                 event.setTime(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TIME)));
-                event.setCapacity(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY))));
+                event.setCapacity(cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY)));
                 event.setCategory(Event.Category.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CATEGORY))));
                 event.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_LOCATION)));
                 event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
@@ -271,7 +271,7 @@ public class EventTable {
                 event.setName(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_NAME)));
                 event.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE)));
                 event.setTime(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TIME)));
-                event.setCapacity(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY))));
+                event.setCapacity(cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY)));
                 event.setCategory(Event.Category.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CATEGORY))));
                 event.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_LOCATION)));
                 event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
@@ -362,7 +362,7 @@ public class EventTable {
         event.setName(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_NAME)));
         event.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE)));
         event.setTime(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TIME)));
-        event.setCapacity(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY))));
+        event.setCapacity(cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY)));
         event.setCategory(Event.Category.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CATEGORY))));
         event.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_LOCATION)));
         event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));

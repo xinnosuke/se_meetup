@@ -1,4 +1,4 @@
-package com.example.xin.meetup.event;
+package com.example.xin.meetup.main;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;

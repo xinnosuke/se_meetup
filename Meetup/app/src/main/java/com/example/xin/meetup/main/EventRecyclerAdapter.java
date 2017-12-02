@@ -1,4 +1,4 @@
-package com.example.xin.meetup.event;
+package com.example.xin.meetup.main;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatImageView;
@@ -7,8 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.*;

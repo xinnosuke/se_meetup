@@ -4,7 +4,7 @@
     android:id="@+id/event_page_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.xin.meetup.event.EventPageFragment"
+    tools:context="com.example.xin.meetup.main.EventPageFragment"
     android:background="@color/colorTextForBar">
 
     <LinearLayout
@@ -166,8 +166,15 @@
                     android:layout_span="3"
                     android:paddingStart="10dp"
                     android:text="contents" />
+
             </TableRow>
         </TableLayout>
+
+        <!--<com.google.android.gms.maps.MapView-->
+            <!--android:id="@+id/mapView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
@@ -176,7 +183,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:background="@color/colorBottomBar"
+        android:background="@android:color/white"
+        android:backgroundTint="@color/colorYellow"
+        app:backgroundTint="@android:color/white"
         android:src="@drawable/ic_rsvp"
         app:layout_anchor="@id/event_title"
         app:layout_anchorGravity="bottom|right|end"

@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 2;
-    private static DBHelper dbhelper;
     private static final String DATABASE_NAME = "DBHelper.db";
+    private static DBHelper dbhelper;
+
     public final UserTable userTable;
     public final EventTable eventTable;
     public final GuestTable guestTable;
+    public final VenueTable venueTable;
 
     public static synchronized DBHelper getInstance(final Context context) {
         if (dbhelper == null) {
@@ -26,6 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
         userTable = new UserTable(this);
         eventTable = new EventTable(this);
         guestTable = new GuestTable(this);
+        venueTable = new VenueTable(this);
     }
 
     @Override
@@ -33,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
         userTable.onCreate(db);
         eventTable.onCreate(db);
         guestTable.onCreate(db);
+        venueTable.onCreate(db);
     }
 
     @Override
@@ -40,5 +44,6 @@ public class DBHelper extends SQLiteOpenHelper {
         userTable.onUpgrade(db, oldVersion, newVersion);
         eventTable.onUpgrade(db, oldVersion, newVersion);
         guestTable.onUpgrade(db, oldVersion, newVersion);
+        venueTable.onUpgrade(db, oldVersion, newVersion);
     }
 }

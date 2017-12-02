@@ -5,7 +5,7 @@
     android:id="@+id/main_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.xin.meetup.MainActivity">
+    tools:context="com.example.xin.meetup.main.MainActivity">
 
     <FrameLayout
         android:id="@+id/frame_fragment"
