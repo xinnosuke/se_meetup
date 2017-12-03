@@ -27,6 +27,7 @@ import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.login.InputValidation;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.login.LoginActivity;
+import com.example.xin.meetup.util.Constants;
 import com.example.xin.meetup.venue.VenueListFragment;
 
 import java.text.SimpleDateFormat;
@@ -58,8 +59,24 @@ public class CreateNewEventFragment extends Fragment {
     private Event event;
     private String category = "";
     private int userId;
-    Calendar myCalendar = Calendar.getInstance();
-    Calendar calendarTime = Calendar.getInstance();
+    private final Calendar myCalendar = Calendar.getInstance();
+    private final Calendar calendarTime = Calendar.getInstance();
+
+    public static Fragment newInstance(final int userId) {
+        final Fragment fragment = new CreateNewEventFragment();
+        final Bundle args = new Bundle();
+        args.putInt(Constants.USER_ID, userId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        final Bundle args = getArguments();
+        userId = args.getInt(Constants.USER_ID);
+    }
 
     @Nullable
     @Override
@@ -83,8 +100,6 @@ public class CreateNewEventFragment extends Fragment {
         appCompatButtonCreateEvent = rootView.findViewById(R.id.appCompatButtonCreateEvent);
         appCompatTextViewViewVenue  =rootView.findViewById(R.id.appCompatTextViewVenue);
         appCompatTextViewCancel = rootView.findViewById(R.id.appCompatTextViewCancel);
-
-        userId = LoginActivity.getUserId();
 
         final Spinner spinner = rootView.findViewById(R.id.spinner_event_category);
 
@@ -148,7 +163,7 @@ public class CreateNewEventFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getFragmentManager();
-                Fragment fragment = new VenueListFragment();
+                Fragment fragment = VenueListFragment.newInstance();
                 fragmentManager.beginTransaction()
                         .replace(R.id.create_event_fragment, fragment)
                         .addToBackStack(null)

@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Venue;
-import com.example.xin.meetup.main.CustomItemClickListener;
+import com.example.xin.meetup.util.CustomItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,10 @@ public class VenueListFragment extends Fragment {
 
     private List<Venue> venueList;
     private DBHelper dbHelper;
+
+    public static Fragment newInstance() {
+        return new VenueListFragment();
+    }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -41,13 +45,9 @@ public class VenueListFragment extends Fragment {
         getDataFromSQLite();
 
         final CustomItemClickListener listener = new CustomItemClickListener() {
-            public void onItemClick(final View view, final int position, final int venueId, final int userId) {
-                final Bundle bundle1 = new Bundle();
-                bundle1.putInt("VenueId", venueId);
-
+            public void onItemClick(final View view, final int position, final int venueId) {
                 final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment venuePageFragment = new VenuePageFragment();
-                venuePageFragment.setArguments(bundle1);
+                final Fragment venuePageFragment = VenuePageFragment.newInstance(venueId);
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.venue_list_fragment, venuePageFragment)

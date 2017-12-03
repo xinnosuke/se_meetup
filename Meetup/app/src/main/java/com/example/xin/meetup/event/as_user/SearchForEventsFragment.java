@@ -16,8 +16,7 @@ import android.widget.Toast;
 
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.main.CustomItemClickListener;
-import com.example.xin.meetup.main.EventPageFragment;
+import com.example.xin.meetup.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +25,22 @@ public class SearchForEventsFragment extends Fragment {
 
     private String category = "";
     private int range;
+    private int userId;
+
+    public static Fragment newInstance(final int userId) {
+        final Fragment fragment = new SearchForEventsFragment();
+        final Bundle args = new Bundle();
+        args.putInt(Constants.USER_ID, userId);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final Bundle args = getArguments();
+        userId = args.getInt(Constants.USER_ID);
     }
 
     @Nullable
@@ -38,23 +49,6 @@ public class SearchForEventsFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_search_events, container, false);
 
         final TextView noEventTextView = rootView.findViewById(R.id.empty_view);
-
-        final CustomItemClickListener listener = new CustomItemClickListener() {
-            public void onItemClick(final View view, final int position, final int eventId, final int userId) {
-                final Bundle bundle1 = new Bundle();
-                bundle1.putInt("EventId", eventId);
-                bundle1.putInt("OrganizerId", userId);
-
-                final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment eventPageFragment = new EventPageFragment();
-                eventPageFragment.setArguments(bundle1);
-
-                fragmentManager.beginTransaction()
-                        .replace(R.id.search_event_frame, eventPageFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        };
 
         final Spinner spinnerCategory = rootView.findViewById(R.id.spinner_category);
         final Spinner spinnerWhen = rootView.findViewById(R.id.spinner_when);
@@ -123,13 +117,7 @@ public class SearchForEventsFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                final Bundle bundle = new Bundle();
-                bundle.putString("Category", category);
-                bundle.putInt("Range", range);
-
-                final Fragment fragment = new SearchResultListFragment();
-                fragment.setArguments(bundle);
-
+                final Fragment fragment = SearchResultListFragment.newInstance(userId, category, range);
                 final FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.search_result_frame, fragment)

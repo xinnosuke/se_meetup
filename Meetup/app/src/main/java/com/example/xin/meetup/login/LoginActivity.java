@@ -11,14 +11,11 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.xin.meetup.database.Venue;
-import com.example.xin.meetup.database.VenueSamples;
-import com.example.xin.meetup.main.MainActivity;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Hashing;
-
-import java.util.List;
+import com.example.xin.meetup.main.MainActivity;
+import com.example.xin.meetup.util.Constants;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,7 +30,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AppCompatTextView textViewLinkRegister;
     private InputValidation inputValidation;
     private DBHelper databaseHelper;
-    public static int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,13 +101,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final String hashedPassword = Hashing.getHexString(password.trim());
 
         if (databaseHelper.userTable.checkUser(email, hashedPassword)) {
-            userId = databaseHelper.userTable.getUser(email).getId();
+            final int userId = databaseHelper.userTable.getUser(email).getId();
             Intent accountsIntent = new Intent(activity, MainActivity.class);
-            accountsIntent.putExtra("UserId", userId);
+            accountsIntent.putExtra(Constants.USER_ID, userId);
             emptyInputEditText();
             startActivity(accountsIntent);
-        }
-        else {
+        } else {
             onLoginFailed();
         }
     }
@@ -167,9 +162,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textInputEditTextEmail.setText(null);
         textInputEditTextPassword.setText(null);
     }
-
-    public static int getUserId() {
-        return userId;
-    }
 }
-

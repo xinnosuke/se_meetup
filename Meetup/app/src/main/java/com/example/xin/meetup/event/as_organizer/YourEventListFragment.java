@@ -16,9 +16,10 @@ import android.widget.TextView;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.main.CustomItemClickListener;
+import com.example.xin.meetup.util.CustomItemClickListener;
 import com.example.xin.meetup.main.EventPageFragment;
 import com.example.xin.meetup.main.EventRecyclerAdapter;
+import com.example.xin.meetup.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +30,20 @@ public class YourEventListFragment extends Fragment {
     private List<Event> listEvent;
     private DBHelper dbHelper;
 
+    public static Fragment newInstance(final int userId) {
+        final Fragment fragment = new YourEventListFragment();
+        final Bundle args = new Bundle();
+        args.putInt(Constants.USER_ID, userId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final Bundle bundle = getArguments();
-        if (bundle != null) {
-            userId = bundle.getInt("UserId");
-        }
+        userId = bundle.getInt(Constants.USER_ID);
     }
 
     @Nullable
@@ -52,15 +59,9 @@ public class YourEventListFragment extends Fragment {
         final TextView noEventTextView = rootView.findViewById(R.id.empty_view);
 
         final CustomItemClickListener listener = new CustomItemClickListener() {
-            public void onItemClick(final View view, final int position, final int eventId, final int userId) {
-                final Bundle bundle1 = new Bundle();
-                bundle1.putInt("EventId", eventId);
-                bundle1.putInt("OrganizerId", userId);
-                bundle1.putString("UserType", "organizer");
-
+            public void onItemClick(final View view, final int position, final int eventId) {
                 final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment eventPageFragment = new EventPageFragment();
-                eventPageFragment.setArguments(bundle1);
+                final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, "organizer");
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.event_list_fragment, eventPageFragment)
@@ -91,7 +92,7 @@ public class YourEventListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment fragment = new CreateNewEventFragment();
+                final Fragment fragment = CreateNewEventFragment.newInstance(userId);
                 fragmentManager.beginTransaction()
                         .replace(R.id.event_list_fragment, fragment)
                         .commit();

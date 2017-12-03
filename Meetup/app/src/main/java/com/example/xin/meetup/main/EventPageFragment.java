@@ -15,20 +15,25 @@ import com.example.xin.meetup.*;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.login.LoginActivity;
+import com.example.xin.meetup.util.Constants;
 
 public class EventPageFragment extends Fragment {
     private static final String EVENT_ID = "EventId";
     private static final String USER_TYPE = "UserType";
     private int eventId;
+    private int userId;
     private String userType;
 
-    public EventPageFragment() {
-    }
-
-    public static EventPageFragment newInstance(final int eventId) {
+    public static EventPageFragment newInstance(
+            final int eventId,
+            final int userId,
+            final String userType)
+    {
         final EventPageFragment fragment = new EventPageFragment();
         final Bundle args = new Bundle();
         args.putInt(EVENT_ID, eventId);
+        args.putInt(Constants.USER_ID, userId);
+        if (userType != null) args.putString(USER_TYPE, userType);
         fragment.setArguments(args);
 
         return fragment;
@@ -37,8 +42,11 @@ public class EventPageFragment extends Fragment {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        eventId = getArguments().getInt(EVENT_ID);
-        userType = getArguments().getString(USER_TYPE);
+
+        final Bundle args = getArguments();
+        eventId = args.getInt(EVENT_ID);
+        userId = args.getInt(Constants.USER_ID);
+        userType = args.getString(USER_TYPE);
     }
 
     @Override
@@ -68,7 +76,7 @@ public class EventPageFragment extends Fragment {
         organizerTextView.setText(organizerName);
         descriptionTextView.setText(event.getDescription());
 
-        if (userType.equals("user")) {
+        if (userType != null && userType.equals("user")) {
             final FloatingActionButton fb = rootView.findViewById(R.id.fab_rsvp);
             fb.setVisibility(View.VISIBLE);
             fb.bringToFront();
@@ -76,7 +84,7 @@ public class EventPageFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     DBHelper dbHelper = DBHelper.getInstance(getContext());
-                    dbHelper.guestTable.addGuest(eventId, LoginActivity.getUserId());
+                    dbHelper.guestTable.addGuest(eventId, userId);
                     Toast.makeText(getContext(), "Woohoo!", Toast.LENGTH_SHORT).show();
 
                 }

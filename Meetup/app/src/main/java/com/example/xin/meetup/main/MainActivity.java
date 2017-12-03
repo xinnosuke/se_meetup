@@ -9,9 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.xin.meetup.R;
+import com.example.xin.meetup.event.as_organizer.YourEventListFragment;
 import com.example.xin.meetup.event.as_user.RegisteredEventFragment;
 import com.example.xin.meetup.event.as_user.SearchForEventsFragment;
-import com.example.xin.meetup.event.as_organizer.YourEventListFragment;
+import com.example.xin.meetup.util.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,33 +23,26 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             final FragmentManager fragmentManager = getSupportFragmentManager();
-            final Bundle bundle = new Bundle();
-            bundle.putInt("UserId", userId);
+            final Fragment fragment;
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    final Fragment fragment = new RegisteredEventFragment();
-                    fragment.setArguments(bundle);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.frame_fragment, fragment)
-                            .commit();
-                    return true;
+                    fragment = RegisteredEventFragment.newInstance(userId);
+                    break;
                 case R.id.navigation_your_events:
-                    final Fragment fragment2 = new YourEventListFragment();
-                    fragment2.setArguments(bundle);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.frame_fragment, fragment2)
-                            .commit();
-                    return true;
+                    fragment = YourEventListFragment.newInstance(userId);
+                    break;
                 case R.id.navigation_search_for_events:
-                    Fragment eventFragment3 = new SearchForEventsFragment();
-                    eventFragment3.setArguments(bundle);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.frame_fragment, eventFragment3)
-                            .commit();
-                    return true;
+                    fragment = SearchForEventsFragment.newInstance(userId);
+                    break;
+                default:
+                    return false;
             }
-            return false;
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_fragment, fragment)
+                    .commit();
+            return true;
         }
     };
 
@@ -56,19 +50,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Bundle bundle = getIntent().getExtras();
-        userId = bundle.getInt("UserId");
+        final Bundle intentArgs = getIntent().getExtras();
+        userId = intentArgs.getInt(Constants.USER_ID);
         setContentView(R.layout.activity_main);
 
         final BottomNavigationView navigation = findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        final Fragment fragment = RegisteredEventFragment.newInstance(userId);
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        final Bundle bundle2 = new Bundle();
-        bundle.putInt("UserId", userId);
-
-        final Fragment fragment = new RegisteredEventFragment();
-        fragment.setArguments(bundle2);
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_fragment, fragment)
                 .commit();

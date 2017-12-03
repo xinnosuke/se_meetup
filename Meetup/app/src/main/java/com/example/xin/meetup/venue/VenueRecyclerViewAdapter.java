@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Venue;
-import com.example.xin.meetup.main.CustomItemClickListener;
+import com.example.xin.meetup.util.CustomItemClickListener;
 
 import java.util.List;
 
@@ -67,7 +67,7 @@ public class VenueRecyclerViewAdapter extends RecyclerView.Adapter<VenueRecycler
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    listener.onItemClick(view, getAdapterPosition(), venueId, -1);
+                    listener.onItemClick(view, getAdapterPosition(), venueId);
                 }
             });
         }

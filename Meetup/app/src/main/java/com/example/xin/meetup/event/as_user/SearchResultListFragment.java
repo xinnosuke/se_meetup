@@ -16,7 +16,8 @@ import android.widget.TextView;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.main.CustomItemClickListener;
+import com.example.xin.meetup.util.Constants;
+import com.example.xin.meetup.util.CustomItemClickListener;
 import com.example.xin.meetup.main.EventPageFragment;
 import com.example.xin.meetup.main.EventRecyclerAdapter;
 import com.example.xin.meetup.login.LoginActivity;
@@ -26,20 +27,33 @@ import java.util.List;
 
 public class SearchResultListFragment extends Fragment {
 
+    private final static String CATEGORY = "Category";
+    private final static String RANGE = "Range";
+
     private List<Event> listEvent;
     private DBHelper dbHelper;
+    private int userId;
     private String category;
     private int range;
+
+    public static Fragment newInstance(final int userId, final String category, final int range) {
+        final Fragment fragment = new SearchResultListFragment();
+        final Bundle args = new Bundle();
+        args.putInt(Constants.USER_ID, userId);
+        args.putString(CATEGORY, category);
+        args.putInt(RANGE, range);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final Bundle bundle = getArguments();
-        if (bundle != null) {
-            category = bundle.getString("Category");
-            range = bundle.getInt("Range");
-        }
+        userId = bundle.getInt(Constants.USER_ID);
+        category = bundle.getString(CATEGORY);
+        range = bundle.getInt(RANGE);
     }
 
     @Nullable
@@ -55,15 +69,9 @@ public class SearchResultListFragment extends Fragment {
         final TextView noEventTextView = rootView.findViewById(R.id.empty_view);
 
         final CustomItemClickListener listener = new CustomItemClickListener() {
-            public void onItemClick(final View view, final int position, final int eventId, final int userId) {
-                final Bundle bundle1 = new Bundle();
-                bundle1.putInt("EventId", eventId);
-                bundle1.putInt("OrganizerId", userId);
-                bundle1.putString("UserType", "user");
-
+            public void onItemClick(final View view, final int position, final int eventId) {
                 final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment eventPageFragment = new EventPageFragment();
-                eventPageFragment.setArguments(bundle1);
+                final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, "user");
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.event_list_fragment, eventPageFragment)
@@ -100,7 +108,7 @@ public class SearchResultListFragment extends Fragment {
             listEvent.clear();
             listEvent.addAll(dbHelper.eventTable.getEventByCategoryAndDate(Event.Category.valueOf(category), range));
             for (Event event : listEvent) {
-                if (dbHelper.guestTable.hasRegistered(event.getId(), LoginActivity.getUserId())) {
+                if (dbHelper.guestTable.hasRegistered(event.getId(), userId)) {
                     listEvent.remove(event);
                 }
             }

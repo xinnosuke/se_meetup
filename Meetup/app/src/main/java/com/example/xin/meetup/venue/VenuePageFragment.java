@@ -17,9 +17,6 @@ public class VenuePageFragment extends Fragment {
     private static final String VENUE_ID = "VenueId";
     private int venueId;
 
-    public VenuePageFragment() {
-    }
-
     public static VenuePageFragment newInstance(final int venueId) {
         final VenuePageFragment fragment = new VenuePageFragment();
         final Bundle args = new Bundle();

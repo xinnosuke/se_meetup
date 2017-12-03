@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.*;
+import com.example.xin.meetup.util.CustomItemClickListener;
 
 import java.util.List;
 
@@ -62,12 +63,11 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             thumbnail = view.findViewById(R.id.thumbnail);
 
             final int eventId = event.getId();
-            final int organizerId = event.getOrganizerId();
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    listener.onItemClick(view, getAdapterPosition(), eventId, organizerId);
+                    listener.onItemClick(view, getAdapterPosition(), eventId);
                     final int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
                         EventRecyclerAdapter.this.notifyDataSetChanged();
