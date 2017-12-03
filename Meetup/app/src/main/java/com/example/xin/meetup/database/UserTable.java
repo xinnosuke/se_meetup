@@ -61,7 +61,6 @@ public class UserTable {
 
         final String selection = COLUMN_USER_EMAIL + " = ?";
         final String[] selectionArgs = {email};
-        User user = new User();
         final SQLiteDatabase db = helper.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_USER, //Table to query
@@ -73,10 +72,7 @@ public class UserTable {
                 null); //The sort order
 
         cursor.moveToFirst();
-        user.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_USER_ID)));
-        user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
-        user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
-        user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+        final User user = userFromCursor(cursor);
 
         cursor.close();
         db.close();
@@ -135,12 +131,7 @@ public class UserTable {
 
         if (cursor.moveToFirst()) {
             do {
-                User user = new User();
-                user.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID))));
-                user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
-                user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
-                user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
-                // Adding user record to list
+                final User user = userFromCursor(cursor);
                 userList.add(user);
             } while (cursor.moveToNext());
         }
@@ -218,5 +209,14 @@ public class UserTable {
 //        }
 
         return cursorCount > 0;
+    }
+
+    private static User userFromCursor(final Cursor cursor) {
+        final User user = new User();
+        user.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_USER_ID)));
+        user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
+        user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
+        user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+        return user;
     }
 }

@@ -12,11 +12,11 @@ public class GuestTable {
     private static final String COLUMN_EVENT_ID = "event_id";
     private static final String COLUMN_GUEST_ID = "guest_id";
 
-    private String CREATE_GUEST_LIST_TABLE = "CREATE TABLE " + TABLE_GUEST + "("
+    private static final String CREATE_GUEST_LIST_TABLE = "CREATE TABLE " + TABLE_GUEST + "("
             + COLUMN_EVENT_ID + " INTEGER, "
             + COLUMN_GUEST_ID + " INTEGER" + ")";
 
-    private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_GUEST;
+    private static final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_GUEST;
 
     private final SQLiteOpenHelper helper;
 

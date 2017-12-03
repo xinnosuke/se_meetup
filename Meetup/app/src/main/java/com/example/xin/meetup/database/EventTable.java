@@ -26,19 +26,19 @@ public class EventTable {
     private static final String COLUMN_EVENT_DESCRIPTION = "event_description";
     private static final String COLUMN_EVENT_STATUS = "event_status";
 
-    private final String CREATE_EVENT_TABLE = "CREATE TABLE " + TABLE_NAME + "("
-            + COLUMN_EVENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + COLUMN_EVENT_NAME + " TEXT,"
-            + COLUMN_EVENT_DATE + " TEXT,"
-            + COLUMN_EVENT_TIME + " TEXT,"
+    private static final String CREATE_EVENT_TABLE = "CREATE TABLE " + TABLE_NAME + "("
+            + COLUMN_EVENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_EVENT_NAME + " TEXT, "
+            + COLUMN_EVENT_DATE + " TEXT, "
+            + COLUMN_EVENT_TIME + " TEXT, "
             + COLUMN_EVENT_CAPACITY + " INTEGER, "
             + COLUMN_EVENT_CATEGORY + " TEXT, "
-            + COLUMN_EVENT_LOCATION + " TEXT,"
-            + EVENT_ORGANIZER_ID + " INTEGER,"
+            + COLUMN_EVENT_LOCATION + " TEXT, "
+            + EVENT_ORGANIZER_ID + " INTEGER, "
             + COLUMN_EVENT_DESCRIPTION + " TEXT, "
             + COLUMN_EVENT_STATUS + " INTEGER" + ")";
 
-    private final String DROP_EVENT_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    private static final String DROP_EVENT_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     private final SQLiteOpenHelper helper;
 
@@ -106,17 +106,8 @@ public class EventTable {
 
         if (cursor.moveToFirst()) {
             do {
-                Event event = new Event();
-                event.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_ID))));
-                event.setName(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_NAME)));
-                event.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE)));
-                event.setTime(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TIME)));
-                event.setCapacity(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY))));
-                event.setCategory(Event.Category.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CATEGORY))));
-                event.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_LOCATION)));
-                event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
-                event.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION)));
-                event.setStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_STATUS))));
+                final Event event = eventFromCursor(cursor);
+                eventList.add(event);
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -167,17 +158,7 @@ public class EventTable {
 
         if (cursor.moveToFirst()) {
             do {
-                Event event = new Event();
-                event.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_ID))));
-                event.setName(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_NAME)));
-                event.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE)));
-                event.setTime(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TIME)));
-                event.setCapacity(cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY)));
-                event.setCategory(Event.Category.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CATEGORY))));
-                event.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_LOCATION)));
-                event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
-                event.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION)));
-                event.setStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_STATUS))));
+                final Event event = eventFromCursor(cursor);
                 eventList.add(event);
             } while (cursor.moveToNext());
         }
@@ -215,18 +196,7 @@ public class EventTable {
 
         if (cursor.moveToFirst()) {
             do {
-                Event event = new Event();
-                event.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_ID))));
-                event.setName(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_NAME)));
-                event.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE)));
-                event.setTime(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TIME)));
-                event.setCapacity(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY))));
-                event.setCategory(Event.Category.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CATEGORY))));
-                event.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_LOCATION)));
-                event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
-                event.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION)));
-                event.setStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_STATUS))));
-                // Adding venue record to list
+                final Event event = eventFromCursor(cursor);
                 eventList.add(event);
             } while (cursor.moveToNext());
         }
@@ -266,17 +236,7 @@ public class EventTable {
 
         if (cursor.moveToFirst()) {
             do {
-                Event event = new Event();
-                event.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_ID))));
-                event.setName(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_NAME)));
-                event.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE)));
-                event.setTime(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TIME)));
-                event.setCapacity(cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY)));
-                event.setCategory(Event.Category.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CATEGORY))));
-                event.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_LOCATION)));
-                event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
-                event.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION)));
-                event.setStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_STATUS))));
+                final Event event = eventFromCursor(cursor);
                 eventList.add(event);
             } while (cursor.moveToNext());
         }
@@ -358,21 +318,26 @@ public class EventTable {
                 null);               //The sort order
 
         cursor.moveToFirst();
-        Event event = new Event();
-        event.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_ID))));
+        final Event event = eventFromCursor(cursor);
+
+        cursor.close();
+        db.close();
+
+        return event;
+    }
+
+    private static Event eventFromCursor(final Cursor cursor) {
+        final Event event = new Event();
+        event.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_ID)));
         event.setName(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_NAME)));
         event.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE)));
         event.setTime(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TIME)));
         event.setCapacity(cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_CAPACITY)));
         event.setCategory(Event.Category.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_CATEGORY))));
         event.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_LOCATION)));
-        event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
+        event.setOrganizerId(cursor.getInt(cursor.getColumnIndex(EVENT_ORGANIZER_ID)));
         event.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION)));
-        event.setStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_STATUS))));
-
-        cursor.close();
-        db.close();
-
+        event.setStatus(cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_STATUS)));
         return event;
     }
 }

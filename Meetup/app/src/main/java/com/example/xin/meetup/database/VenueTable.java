@@ -24,8 +24,7 @@ public class VenueTable {
     private static final String COLUMN_RATING = "venue_rating";
     private static final String COLUMN_DESCRIPTION = "venue_description";
 
-
-    private final String CREATE_VENUE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
+    private static final String CREATE_VENUE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
             + COLUMN_VENUE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_VENUE_NAME + " TEXT, "
             + COLUMN_OWNER_ID + " INTEGER, "
@@ -39,7 +38,7 @@ public class VenueTable {
             + COLUMN_RATING + " REAL, "
             + COLUMN_DESCRIPTION + " TEXT" + ")";
 
-    private final String DROP_VENUE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    private static final String DROP_VENUE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     private final SQLiteOpenHelper helper;
 
@@ -127,20 +126,7 @@ public class VenueTable {
 
         if (cursor.moveToFirst()) {
             do {
-                Venue venue = new Venue();
-                venue.setVenueId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_VENUE_ID))));
-                venue.setVenueName(cursor.getString(cursor.getColumnIndex(COLUMN_VENUE_NAME)));
-                venue.setOwnerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_OWNER_ID))));
-                venue.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_LOCATION)));
-                venue.setCapacity(cursor.getInt(cursor.getColumnIndex(COLUMN_CAPACITY)));
-                venue.setCost(cursor.getString(cursor.getColumnIndex(COLUMN_COST)));
-                venue.setHoursOpen(cursor.getString(cursor.getColumnIndex(COLUMN_HOURS_OPEN)));
-                venue.setHoursClose(cursor.getString(cursor.getColumnIndex(COLUMN_HOURS_CLOSE)));
-                venue.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
-                venue.setPhone(cursor.getString(cursor.getColumnIndex(COLUMN_PHONE)));
-                venue.setRating(cursor.getFloat(cursor.getColumnIndex(COLUMN_RATING)));
-                venue.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
-
+                final Venue venue = venueFromCursor(cursor);
                 venueList.add(venue);
             } while (cursor.moveToNext());
         }
@@ -230,10 +216,19 @@ public class VenueTable {
                 null);               //The sort order
 
         cursor.moveToFirst();
-        Venue venue = new Venue();
+        final Venue venue = venueFromCursor(cursor);
+
+        cursor.close();
+        db.close();
+
+        return venue;
+    }
+
+    private static Venue venueFromCursor(final Cursor cursor) {
+        final Venue venue = new Venue();
         venue.setVenueId(cursor.getInt(cursor.getColumnIndex(COLUMN_VENUE_ID)));
         venue.setVenueName(cursor.getString(cursor.getColumnIndex(COLUMN_VENUE_NAME)));
-        venue.setOwnerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_OWNER_ID))));
+        venue.setOwnerId(cursor.getInt(cursor.getColumnIndex(COLUMN_OWNER_ID)));
         venue.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_LOCATION)));
         venue.setCapacity(cursor.getInt(cursor.getColumnIndex(COLUMN_CAPACITY)));
         venue.setCost(cursor.getString(cursor.getColumnIndex(COLUMN_COST)));
@@ -243,10 +238,6 @@ public class VenueTable {
         venue.setPhone(cursor.getString(cursor.getColumnIndex(COLUMN_PHONE)));
         venue.setRating(cursor.getFloat(cursor.getColumnIndex(COLUMN_RATING)));
         venue.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
-
-        cursor.close();
-        db.close();
-
         return venue;
     }
 }
