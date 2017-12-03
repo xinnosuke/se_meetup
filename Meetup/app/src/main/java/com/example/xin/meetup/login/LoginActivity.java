@@ -11,10 +11,14 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.xin.meetup.database.Venue;
+import com.example.xin.meetup.database.VenueSamples;
 import com.example.xin.meetup.main.MainActivity;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Hashing;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -80,6 +84,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             onLoginFailed();
             return;
         }
+
+//        databaseHelper.venueTable.deleteAll();
+//        List<Venue> venues = VenueSamples.getVenueSample();
+//        for (Venue venue : venues) {
+//            databaseHelper.venueTable.addVenue(venue);
+//        }
 
         appCompatButtonLogin.setEnabled(false);
 

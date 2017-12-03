@@ -1,0 +1,66 @@
+package com.example.xin.meetup.venue;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.xin.meetup.R;
+import com.example.xin.meetup.database.DBHelper;
+import com.example.xin.meetup.database.Venue;
+
+public class VenuePageFragment extends Fragment {
+    private static final String VENUE_ID = "VenueId";
+    private int venueId;
+
+    public VenuePageFragment() {
+    }
+
+    public static VenuePageFragment newInstance(final int venueId) {
+        final VenuePageFragment fragment = new VenuePageFragment();
+        final Bundle args = new Bundle();
+        args.putInt(VENUE_ID, venueId);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        venueId = getArguments().getInt(VENUE_ID);
+    }
+
+    @Override
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        final DBHelper dbHelper = new DBHelper(getContext());
+        final Venue venue = dbHelper.venueTable.getVenueById(venueId);
+
+        final View rootView = inflater.inflate(R.layout.fragment_venue_page, container, false);
+        final ImageView imageView = rootView.findViewById(R.id.venue_image);
+        final TextView venueNameTextView = rootView.findViewById(R.id.venue_title);
+        final TextView locationTextView = rootView.findViewById(R.id.venue_location_textView);
+        final TextView costTextView = rootView.findViewById(R.id.venue_cost);
+        final TextView phoneTextView = rootView.findViewById(R.id.venue_phone_textView);
+        final TextView emailTextView = rootView.findViewById(R.id.venue_email_textView);
+        final TextView hourslTextView = rootView.findViewById(R.id.venue_hours_extView);
+        final TextView capacityTextView = rootView.findViewById(R.id.venue_capacity_textView);
+        final TextView descriptionTextView = rootView.findViewById(R.id.venue_description_textView);
+
+        final String hours = venue.getHoursOpen() + " ~ " + venue.getHoursClose();
+        venueNameTextView.setText(venue.getVenueName());
+        locationTextView.setText(venue.getLocation());
+        costTextView.setText(venue.getCost());
+        phoneTextView.setText(venue.getPhone());
+        emailTextView.setText(venue.getEmail());
+        hourslTextView.setText(hours);
+        capacityTextView.setText(String.valueOf(venue.getCapacity()));
+        descriptionTextView.setText(venue.getDescription());
+
+        return rootView;
+    }
+}

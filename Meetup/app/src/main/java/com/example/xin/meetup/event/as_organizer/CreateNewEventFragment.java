@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -25,6 +26,9 @@ import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.login.InputValidation;
 import com.example.xin.meetup.R;
+import com.example.xin.meetup.login.LoginActivity;
+import com.example.xin.meetup.venue.VenueListFragment;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,6 +51,7 @@ public class CreateNewEventFragment extends Fragment {
     private static String buttonTextDate = "";
     private static String buttonTextTime = "";
     private AppCompatButton appCompatButtonCreateEvent;
+    private AppCompatTextView appCompatTextViewViewVenue;
     private AppCompatTextView appCompatTextViewCancel;
     private InputValidation inputValidation;
     private DBHelper databaseHelper;
@@ -59,7 +64,7 @@ public class CreateNewEventFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, final Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_create_activity, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_create_event, container, false);
         textInputLayoutEventName = rootView.findViewById(R.id.textInputLayoutEventName);
         textInputLayoutLocation = rootView.findViewById(R.id.textInputLayoutLocation);
         textInputLayoutOrganizer = rootView.findViewById(R.id.textInputLayoutOrganizer);
@@ -76,10 +81,10 @@ public class CreateNewEventFragment extends Fragment {
         buttonDate.setText(buttonTextTime);
 
         appCompatButtonCreateEvent = rootView.findViewById(R.id.appCompatButtonCreateEvent);
+        appCompatTextViewViewVenue  =rootView.findViewById(R.id.appCompatTextViewVenue);
         appCompatTextViewCancel = rootView.findViewById(R.id.appCompatTextViewCancel);
 
-        final Bundle bundle = getActivity().getIntent().getExtras();
-        userId = bundle.getInt("UserId");
+        userId = LoginActivity.getUserId();
 
         final Spinner spinner = rootView.findViewById(R.id.spinner_event_category);
 
@@ -139,6 +144,18 @@ public class CreateNewEventFragment extends Fragment {
             }
         });
 
+        appCompatTextViewViewVenue.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getFragmentManager();
+                Fragment fragment = new VenueListFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.create_event_fragment, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         appCompatTextViewCancel.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
                 goBackToEventList();
@@ -182,14 +199,6 @@ public class CreateNewEventFragment extends Fragment {
 
         return true;
     }
-
-//    public void goBackToMainPage() {
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.create_event_fragment, new RegisteredEventListFragment())
-//                .addToBackStack(null)
-//                .commit();
-//    }
 
     public void goBackToEventList() {
         final Intent intent = new Intent(getContext(), YourEventListFragment.class);

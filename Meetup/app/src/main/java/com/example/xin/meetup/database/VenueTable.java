@@ -65,6 +65,7 @@ public class VenueTable {
         cursor.moveToFirst();
 
         final int icount = cursor.getCount();
+        cursor.close();
         db.close();
 
         return icount > 0;
@@ -86,7 +87,7 @@ public class VenueTable {
         values.put(COLUMN_EMAIL, venue.getEmail());
         values.put(COLUMN_PHONE, venue.getPhone());
         values.put(COLUMN_RATING, venue.getRating());
-        values.put(COLUMN_DESCRIPTION, venue.getCapacity());
+        values.put(COLUMN_DESCRIPTION, venue.getDescription());
 
         db.insert(TABLE_NAME, null, values);
 
@@ -181,18 +182,26 @@ public class VenueTable {
         db.close();
     }
 
+    public void deleteAll() {
+        final SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_NAME);
+        db.close();
+    }
+
     public boolean tableEmpty() {
         final String count = "SELECT count(*) FROM" + TABLE_NAME;
         final SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor mcursor = db.rawQuery(count, null);
-        mcursor.moveToFirst();
+        Cursor cursor = db.rawQuery(count, null);
+        cursor.moveToFirst();
 
-        final int icount = mcursor.getInt(0);
+        final int icount = cursor.getInt(0);
+        cursor.close();
+        db.close();
 
         return  icount <= 0;
     }
 
-    public Venue getEventById(final int venueId) {
+    public Venue getVenueById(final int venueId) {
         final String[] columns = {
                 COLUMN_VENUE_ID,
                 COLUMN_VENUE_NAME,
@@ -222,7 +231,7 @@ public class VenueTable {
 
         cursor.moveToFirst();
         Venue venue = new Venue();
-        venue.setVenueId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_VENUE_ID))));
+        venue.setVenueId(cursor.getInt(cursor.getColumnIndex(COLUMN_VENUE_ID)));
         venue.setVenueName(cursor.getString(cursor.getColumnIndex(COLUMN_VENUE_NAME)));
         venue.setOwnerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_OWNER_ID))));
         venue.setLocation(cursor.getString(cursor.getColumnIndex(COLUMN_LOCATION)));

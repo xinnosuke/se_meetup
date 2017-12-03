@@ -97,17 +97,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         final String hashedPassword = Hashing.getHexString(password.trim());
 
         if (!databaseHelper.userTable.checkUser(email.trim())) {
-
             user.setName(name.trim());
             user.setEmail(email.trim());
             user.setPassword(hashedPassword);
-
             databaseHelper.userTable.addUser(user);
         }
         else {
-            userExist();
+            inputValidation.setManualError(textInputEditTextEmail, textInputLayoutEmail, "Account already exists");
+            Toast.makeText(this, "Account " + email + " already exist", Toast.LENGTH_LONG).show();
             return;
         }
+
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                      public void run() {
+                          onSignupSuccess();
+                          progressDialog.dismiss();
+                      }
+                }, 1000);
     }
 
     public void onSignupSuccess() {

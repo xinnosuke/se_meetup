@@ -14,15 +14,12 @@ import com.example.xin.meetup.*;
 
 import java.util.List;
 
-public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.EventViewHolder> implements View.OnClickListener {
+public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.EventViewHolder> {
 
     private List<Event> listEvent;
-    private int eventId;
-    private int organizerId;
     private DBHelper dbHelper;
     FragmentManager fragmentManager;
     CustomItemClickListener listener;
-
 
     public EventRecyclerAdapter(final List<Event> listEvent, final DBHelper databaseHelper,
                                 final FragmentManager fragmentManager, final CustomItemClickListener listener) {
@@ -30,6 +27,22 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         dbHelper = databaseHelper;
         this.fragmentManager = fragmentManager;
         this.listener = listener;
+    }
+
+    @Override
+    public EventRecyclerAdapter.EventViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+        final View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.event_list_item, parent, false);
+
+        return new EventViewHolder(itemView, listener);
+    }
+
+    @Override
+    public void onBindViewHolder(final EventRecyclerAdapter.EventViewHolder holder, final int position) {
+        holder.event = listEvent.get(position);
+        holder.textViewEventName.setText(listEvent.get(position).getName());
+        holder.textViewDate.setText(listEvent.get(position).getDate());
+        holder.textViewLocation.setText(listEvent.get(position).getLocation());
     }
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
@@ -48,6 +61,9 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             textViewLocation = view.findViewById(R.id.event_location);
             thumbnail = view.findViewById(R.id.thumbnail);
 
+            final int eventId = event.getId();
+            final int organizerId = event.getOrganizerId();
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
@@ -62,30 +78,8 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     }
 
     @Override
-    public EventRecyclerAdapter.EventViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        final View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.event_list_item, parent, false);
-
-        return new EventViewHolder(itemView, listener);
-    }
-
-    @Override
-    public void onBindViewHolder(final EventRecyclerAdapter.EventViewHolder holder, final int position) {
-        eventId = listEvent.get(position).getId();
-        organizerId = listEvent.get(position).getOrganizerId();
-        holder.event = listEvent.get(position);
-        holder.textViewEventName.setText(listEvent.get(position).getName());
-        holder.textViewDate.setText(listEvent.get(position).getDate());
-        holder.textViewLocation.setText(listEvent.get(position).getLocation());
-    }
-
-    @Override
     public int getItemCount() {
         return listEvent.size();
-    }
-
-    @Override
-    public void onClick(final View view) {
     }
 }
 

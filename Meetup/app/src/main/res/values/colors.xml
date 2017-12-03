@@ -18,5 +18,6 @@
     <color name="description">#a9a9a9</color>
     <color name="colorLightGrey">#c1bcab</color>
     <color name="colorEventPageBackground">#f4f3f0</color>
+    <color name="colorVenuePageBackground">#dfbc9f</color>
 
 </resources>

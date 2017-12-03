@@ -80,7 +80,7 @@ public class EventTable {
         values.put(COLUMN_EVENT_CATEGORY, event.getCategory());
         values.put(COLUMN_EVENT_LOCATION, event.getLocation());
         values.put(EVENT_ORGANIZER_ID, event.getOrganizerId());
-        values.put(COLUMN_EVENT_DESCRIPTION, event.getCapacity());
+        values.put(COLUMN_EVENT_DESCRIPTION, event.getDescription());
         values.put(COLUMN_EVENT_STATUS, event.getStatus());
 
         db.insert(TABLE_NAME, null, values);
@@ -226,7 +226,7 @@ public class EventTable {
                 event.setOrganizerId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EVENT_ORGANIZER_ID))));
                 event.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION)));
                 event.setStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_STATUS))));
-                // Adding event record to list
+                // Adding venue record to list
                 eventList.add(event);
             } while (cursor.moveToNext());
         }
@@ -323,8 +323,9 @@ public class EventTable {
 
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
-
         final int icount = mcursor.getInt(0);
+        mcursor.close();
+        db.close();
 
         return  icount <= 0;
     }

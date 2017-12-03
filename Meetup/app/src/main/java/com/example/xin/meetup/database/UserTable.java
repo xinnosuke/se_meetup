@@ -180,9 +180,9 @@ public class UserTable {
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
                 selectionArgs,              //The values for the WHERE clause
-                null,                       //group the rows
-                null,                      //filter by row groups
-                null);                      //The sort order
+                null,              //group the rows
+                null,               //filter by row groups
+                null);              //The sort order
 
         final int cursorCount = cursor.getCount();
         cursor.close();
@@ -201,14 +201,21 @@ public class UserTable {
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
                 selectionArgs,              //The values for the WHERE clause
-                null,                       //group the rows
-                null,                       //filter by row groups
-                null);                      //The sort order
+                null,               //group the rows
+                null,                //filter by row groups
+                null);              //The sort order
 
         final int cursorCount = cursor.getCount();
 
         cursor.close();
         db.close();
+
+//        List<Venue> venueList = VenueSamples.getVenueSample();
+//        VenueTable venueTable = new VenueTable(helper);
+//        venueTable.onCreate(db);
+//        for (Venue venue : venueList) {
+//            venueTable.addVenue(venue);
+//        }
 
         return cursorCount > 0;
     }
