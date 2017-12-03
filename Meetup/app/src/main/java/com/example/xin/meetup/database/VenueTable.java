@@ -49,6 +49,11 @@ public class VenueTable {
     public void onCreate(final SQLiteDatabase db) {
         db.execSQL(DROP_VENUE_TABLE);
         db.execSQL(CREATE_VENUE_TABLE);
+
+        // Adding sample venues to make development and demonstration easier.
+        for (final Venue venue : VenueSamples.getVenueSample()) {
+            addVenueWithDB(db, venue);
+        }
     }
 
     public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
@@ -72,9 +77,11 @@ public class VenueTable {
 
     public void addVenue(final Venue venue) {
         final SQLiteDatabase db = helper.getWritableDatabase();
+        addVenueWithDB(db, venue);
+        db.close();
+    }
 
-        db.beginTransaction();
-
+    private void addVenueWithDB(final SQLiteDatabase db, final Venue venue) {
         final ContentValues values = new ContentValues();
         values.put(COLUMN_VENUE_NAME, venue.getVenueName());
         values.put(COLUMN_OWNER_ID, venue.getOwnerId());
@@ -89,10 +96,6 @@ public class VenueTable {
         values.put(COLUMN_DESCRIPTION, venue.getDescription());
 
         db.insert(TABLE_NAME, null, values);
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
     }
 
     public List<Venue> getAllVenue() {
