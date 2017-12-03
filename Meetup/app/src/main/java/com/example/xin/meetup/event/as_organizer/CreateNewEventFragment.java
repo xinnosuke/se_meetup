@@ -217,9 +217,10 @@ public class CreateNewEventFragment extends Fragment {
         if (!inputValidation.isInputEditTextFilled(textInputEditTextCapacity, textInputLayoutOrganizer, "Enter Valid Organizer")) {
             valid = false;
         }
-        if (!inputValidation.isInputEditTextFilled(buttonTextDate, "missing")) {
-            valid = false;
-        }
+        // TODO: buttonDate and buttonTime validation
+//        if (!inputValidation.isInputEditTextFilled(buttonDate, "missing")) {
+//            valid = false;
+//        }
         return valid;
     }
 
