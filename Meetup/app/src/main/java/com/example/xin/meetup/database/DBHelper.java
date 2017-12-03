@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return dbhelper;
     }
 
-    public DBHelper(final Context context) {
+    private DBHelper(final Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
         userTable = new UserTable(this);

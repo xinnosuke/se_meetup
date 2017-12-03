@@ -43,7 +43,7 @@ public class EventPageFragment extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final DBHelper dbHelper = new DBHelper(getContext());
+        final DBHelper dbHelper = DBHelper.getInstance(getContext());
         final Event event = dbHelper.eventTable.getEventById(eventId);
         final int organizerId = event.getOrganizerId();
         final String organizerName = dbHelper.userTable.getUserName(organizerId);

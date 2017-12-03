@@ -37,7 +37,7 @@ public class VenuePageFragment extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final DBHelper dbHelper = new DBHelper(getContext());
+        final DBHelper dbHelper = DBHelper.getInstance(getContext());
         final Venue venue = dbHelper.venueTable.getVenueById(venueId);
 
         final View rootView = inflater.inflate(R.layout.fragment_venue_page, container, false);
