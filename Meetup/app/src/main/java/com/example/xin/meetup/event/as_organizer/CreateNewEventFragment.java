@@ -22,12 +22,12 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.login.InputValidation;
-import com.example.xin.meetup.R;
-import com.example.xin.meetup.login.LoginActivity;
 import com.example.xin.meetup.util.Constants;
+import com.example.xin.meetup.util.InputValidation;
 import com.example.xin.meetup.venue.VenueListFragment;
 
 import java.text.SimpleDateFormat;

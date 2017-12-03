@@ -1,4 +1,4 @@
-package com.example.xin.meetup.login;
+package com.example.xin.meetup.util;
 
 import android.app.Activity;
 import android.content.Context;

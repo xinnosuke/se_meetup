@@ -16,6 +16,7 @@ import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Hashing;
 import com.example.xin.meetup.main.MainActivity;
 import com.example.xin.meetup.util.Constants;
+import com.example.xin.meetup.util.InputValidation;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
