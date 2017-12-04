@@ -95,6 +95,7 @@ public class YourEventListFragment extends Fragment {
                 final Fragment fragment = CreateNewEventFragment.newInstance(userId);
                 fragmentManager.beginTransaction()
                         .replace(R.id.event_list_fragment, fragment)
+                        .addToBackStack(null)
                         .commit();
             }
         });
