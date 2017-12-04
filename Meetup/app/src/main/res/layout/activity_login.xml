@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nestedScrollView"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
@@ -11,7 +11,7 @@
     android:paddingTop="20dp"
     tools:context=".login.LoginActivity">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <android.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -48,8 +48,8 @@
                 android:textColor="@color/colorTextUserInput" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/appCompatButtonLogin"
+        <android.widget.Button
+            android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -58,7 +58,7 @@
             android:textSize="16sp"
             android:textColor="@color/colorTextButton"/>
 
-        <android.support.v7.widget.AppCompatTextView
+        <android.widget.TextView
             android:id="@+id/textViewLinkRegister"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -66,5 +66,5 @@
             android:gravity="center"
             android:text="@string/text_not_member"
             android:textSize="16sp" />
-    </android.support.v7.widget.LinearLayoutCompat>
-</android.support.v4.widget.NestedScrollView>
+    </android.widget.LinearLayout>
+</android.widget.ScrollView>
