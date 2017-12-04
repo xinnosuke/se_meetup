@@ -1,10 +1,10 @@
 package com.example.xin.meetup.main;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            final FragmentManager fragmentManager = getSupportFragmentManager();
+            final FragmentManager fragmentManager = getFragmentManager();
             final Fragment fragment;
 
             switch (item.getItemId()) {
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         final Fragment fragment = RegisteredEventFragment.newInstance(userId);
-        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_fragment, fragment)
                 .commit();
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final FragmentManager fm = getSupportFragmentManager();
+        final FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             super.onBackPressed();
         } else {
