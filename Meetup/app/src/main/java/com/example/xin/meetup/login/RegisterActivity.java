@@ -1,6 +1,5 @@
 package com.example.xin.meetup.login;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -82,15 +81,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void signup() {
-        if (!postDataToSQLite()) {
-            onSignupFailed();
+        if (!validateInput()) {
+            Toast.makeText(this, "Missing fields", Toast.LENGTH_LONG).show();
             return;
         }
-
-        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this, R.style.AppTheme_PopupOverlay);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
 
         final String name = textInputEditTextName.getText().toString();
         final String email = textInputEditTextEmail.getText().toString();
@@ -101,45 +95,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             user.setName(name.trim());
             user.setEmail(email.trim());
             user.setPassword(hashedPassword);
+
             databaseHelper.userTable.addUser(user);
-        }
-        else {
+        } else {
             inputValidation.setManualError(textInputEditTextEmail, textInputLayoutEmail, "Account already exists");
             Toast.makeText(this, "Account " + email + " already exist", Toast.LENGTH_LONG).show();
             return;
         }
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                      public void run() {
-                          onSignupSuccess();
-                          progressDialog.dismiss();
-                      }
-                }, 1000);
+        onSignupSuccess();
     }
 
     public void onSignupSuccess() {
-        appCompatButtonRegister.setEnabled(true);
         setResult(RESULT_OK, null);
         finish();
     }
 
-    public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
-        appCompatButtonRegister.setEnabled(true);
-        finish();
-    }
-
-    public void userExist() {
-        Toast.makeText(getBaseContext(), "Account already exist", Toast.LENGTH_LONG).show();
-
-        appCompatButtonRegister.setEnabled(true);
-        finish();
-    }
-
-    private boolean postDataToSQLite() {
-
+    private boolean validateInput() {
         boolean valid = true;
 
         if (!inputValidation.isInputEditTextFilled(textInputEditTextName, textInputLayoutName, getString(R.string.error_message_name))) {
@@ -160,12 +132,5 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         return valid;
-    }
-
-    private void emptyInputEditText() {
-        textInputEditTextName.setText(null);
-        textInputEditTextEmail.setText(null);
-        textInputEditTextPassword.setText(null);
-        textInputEditTextConfirmPassword.setText(null);
     }
 }

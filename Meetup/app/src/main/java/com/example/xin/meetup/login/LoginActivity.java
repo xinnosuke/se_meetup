@@ -1,6 +1,5 @@
 package com.example.xin.meetup.login;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -21,7 +20,6 @@ import com.example.xin.meetup.util.InputValidation;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
-    private static final int REQUEST_SIGNUP = 0;
     private final AppCompatActivity activity = LoginActivity.this;
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
@@ -33,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private DBHelper databaseHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
@@ -63,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.appCompatButtonLogin:
                 login();
@@ -78,69 +76,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void login() {
         if (!verifyFromSQLite()) {
-            onLoginFailed();
+            Toast.makeText(getBaseContext(), "Error: some fields are invalid", Toast.LENGTH_LONG).show();
             return;
         }
-
-//        databaseHelper.venueTable.deleteAll();
-//        List<Venue> venues = VenueSamples.getVenueSample();
-//        for (Venue venue : venues) {
-//            databaseHelper.venueTable.addVenue(venue);
-//        }
-
-        appCompatButtonLogin.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setTitle("Please wait");
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.show();
 
         final String email = textInputEditTextEmail.getText().toString().trim();
         final String password = textInputEditTextPassword.getText().toString();
         final String hashedPassword = Hashing.getHexString(password.trim());
 
-        if (databaseHelper.userTable.checkUser(email, hashedPassword)) {
-            final int userId = databaseHelper.userTable.getUser(email).getId();
-            Intent accountsIntent = new Intent(activity, MainActivity.class);
-            accountsIntent.putExtra(Constants.USER_ID, userId);
-            emptyInputEditText();
-            startActivity(accountsIntent);
-        } else {
-            onLoginFailed();
+        if (!databaseHelper.userTable.checkUser(email, hashedPassword)) {
+            Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
         }
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-                Intent accountsIntent = new Intent(activity, MainActivity.class);
-                accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-                emptyInputEditText();
-                startActivity(accountsIntent);
+        final int userId = databaseHelper.userTable.getUser(email).getId();
 
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                this.finish();
-            }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        // disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
-    public void onLoginSuccess() {
-        appCompatButtonLogin.setEnabled(true);
+        final Intent accountsIntent = new Intent(activity, MainActivity.class);
+        accountsIntent.putExtra(Constants.USER_ID, userId);
+        startActivity(accountsIntent);
         finish();
-    }
-
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-        appCompatButtonLogin.setEnabled(true);
     }
 
     private boolean verifyFromSQLite() {
@@ -157,10 +110,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         return valid;
-    }
-
-    private void emptyInputEditText() {
-        textInputEditTextEmail.setText(null);
-        textInputEditTextPassword.setText(null);
     }
 }
