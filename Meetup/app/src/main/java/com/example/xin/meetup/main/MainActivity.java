@@ -63,4 +63,14 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.frame_fragment, fragment)
                 .commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        final FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+        } else {
+            moveTaskToBack(true);
+        }
+    }
 }
