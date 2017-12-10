@@ -16,17 +16,17 @@ public class UserTable {
     private static final String COLUMN_USER_EMAIL = "user_email";
     private static final String COLUMN_USER_PASSWORD = "user_password";
 
-    private final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
-            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT,"
+    private static final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
+            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_USER_NAME + " TEXT, "
+            + COLUMN_USER_EMAIL + " TEXT, "
             + COLUMN_USER_PASSWORD + " TEXT" + ")";
 
-    private final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
+    private static final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
 
     private final SQLiteOpenHelper helper;
 
-    public UserTable(SQLiteOpenHelper helper) {
+    public UserTable(final SQLiteOpenHelper helper) {
         this.helper = helper;
     }
 
@@ -42,7 +42,7 @@ public class UserTable {
     public void addUser(final User user) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(COLUMN_USER_NAME, user.getName());
         values.put(COLUMN_USER_EMAIL, user.getEmail());
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
@@ -63,7 +63,7 @@ public class UserTable {
         final String[] selectionArgs = {email};
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_USER, //Table to query
+        final Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,    //columns to return
                 selection,        //columns for the WHERE clause
                 selectionArgs,        //The values for the WHERE clause
@@ -92,7 +92,7 @@ public class UserTable {
         final String[] selectionArgs = {String.valueOf(userId)};
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_USER, //Table to query
+        final Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,    //columns to return
                 selection,        //columns for the WHERE clause
                 selectionArgs,        //The values for the WHERE clause
@@ -118,10 +118,10 @@ public class UserTable {
         };
 
         final String sortOrder = COLUMN_USER_NAME + " ASC";
-        List<User> userList = new ArrayList<User>();
+        final List<User> userList = new ArrayList<>();
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_USER, //Table to query
+        final Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,    //columns to return
                 null,        //columns for the WHERE clause
                 null,        //The values for the WHERE clause
@@ -141,33 +141,13 @@ public class UserTable {
         return userList;
     }
 
-    public void updateUser(final User user) {
-        final SQLiteDatabase db = helper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_NAME, user.getName());
-        values.put(COLUMN_USER_EMAIL, user.getEmail());
-        values.put(COLUMN_USER_PASSWORD, user.getPassword());
-
-        db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?",
-                new String[]{String.valueOf(user.getId())});
-        db.close();
-    }
-
-    public void deleteUser(final User user) {
-        final SQLiteDatabase db = helper.getWritableDatabase();
-
-        db.delete(TABLE_USER, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(user.getId())});
-        db.close();
-    }
-
     public boolean checkUser(final String email) {
         final String[] columns = {COLUMN_USER_ID};
         final SQLiteDatabase db = helper.getReadableDatabase();
         final String selection = COLUMN_USER_EMAIL + " = ?";
         final String[] selectionArgs = {email};
 
-        Cursor cursor = db.query(TABLE_USER, //Table to query
+        final Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
                 selectionArgs,              //The values for the WHERE clause
@@ -188,7 +168,7 @@ public class UserTable {
         final String selection = COLUMN_USER_EMAIL + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ?";
         final String[] selectionArgs = { email, password };
 
-        Cursor cursor = db.query(TABLE_USER, //Table to query
+        final Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
                 selectionArgs,              //The values for the WHERE clause
@@ -200,13 +180,6 @@ public class UserTable {
 
         cursor.close();
         db.close();
-
-//        List<Venue> venueList = VenueSamples.getVenueSample();
-//        VenueTable venueTable = new VenueTable(helper);
-//        venueTable.onCreate(db);
-//        for (Venue venue : venueList) {
-//            venueTable.addVenue(venue);
-//        }
 
         return cursorCount > 0;
     }

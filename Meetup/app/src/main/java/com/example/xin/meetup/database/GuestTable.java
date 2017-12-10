@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class GuestTable {
         final String selection = COLUMN_EVENT_ID + " = ?";
         final String[] selectArgs = {String.valueOf(eventId)};
 
-        Cursor cursor = db.query(TABLE_GUEST, //Table to query
+        final Cursor cursor = db.query(TABLE_GUEST, //Table to query
                 columns,          //columns to return
                 selection,        //columns for the WHERE clause
                 selectArgs,       //The values for the WHERE clause
@@ -85,7 +86,7 @@ public class GuestTable {
         final String selection = COLUMN_GUEST_ID + " = ?";
         final String[] selectArgs = {String.valueOf(guestId)};
 
-        Cursor cursor = db.query(TABLE_GUEST, //Table to query
+        final Cursor cursor = db.query(TABLE_GUEST, //Table to query
                 columns,          //columns to return
                 selection,        //columns for the WHERE clause
                 selectArgs,       //The values for the WHERE clause
@@ -116,7 +117,7 @@ public class GuestTable {
         final String selection = COLUMN_EVENT_ID + " = ? AND " +COLUMN_GUEST_ID + " = ?";
         final String[] selectionArgs = {String.valueOf(guestId)};
 
-        Cursor cursor = db.query(TABLE_GUEST, //Table to query
+        final Cursor cursor = db.query(TABLE_GUEST, //Table to query
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
                 selectionArgs,              //The values for the WHERE clause
@@ -135,11 +136,11 @@ public class GuestTable {
         final String count = "SELECT count(*) FROM" + TABLE_GUEST;
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor mcursor = db.rawQuery(count, null);
+        final Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
 
         final int icount = mcursor.getInt(0);
 
-        return  icount == 0;
+        return icount == 0;
     }
 }

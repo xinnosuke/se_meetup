@@ -60,7 +60,7 @@ public class EventTable {
         final SQLiteDatabase db = helper.getReadableDatabase();
         final String count = "SELECT count(*) FROM " + TABLE_NAME + " WHERE " + EVENT_ORGANIZER_ID + " = " + organizerId;
 
-        Cursor cursor = db.rawQuery(count, null);
+        final Cursor cursor = db.rawQuery(count, null);
         cursor.moveToFirst();
 
         final int icount = cursor.getCount();
@@ -72,7 +72,7 @@ public class EventTable {
     public void addEvent(final Event event) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT_NAME, event.getName());
         values.put(COLUMN_EVENT_DATE, event.getDate());
         values.put(COLUMN_EVENT_TIME, event.getTime());
@@ -90,13 +90,13 @@ public class EventTable {
     public List<Event> getEventByCategory(final Event.Category category) {
         final String[] columns = {"*"};
 
-        List<Event> eventList = new ArrayList<>();
+        final List<Event> eventList = new ArrayList<>();
         final SQLiteDatabase db = helper.getReadableDatabase();
         final String selection = COLUMN_EVENT_CATEGORY + " = ?";
         final String[] selectArgs = {category.toString()};
         final String order = COLUMN_EVENT_DATE;
 
-        Cursor cursor = db.query(TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(TABLE_NAME, //Table to query
                 columns,    //columns to return
                 selection,        //columns for the WHERE clause
                 selectArgs,        //The values for the WHERE clause
@@ -139,16 +139,16 @@ public class EventTable {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
         calendar.add(Calendar.DAY_OF_YEAR, range);
-        Date date = calendar.getTime();
+        final Date date = calendar.getTime();
         final String futureDate = sdf.format(date);
 
-        List<Event> eventList = new ArrayList<>();
+        final List<Event> eventList = new ArrayList<>();
         final SQLiteDatabase db = helper.getReadableDatabase();
         final String selection = COLUMN_EVENT_CATEGORY + " = ? AND " + COLUMN_EVENT_DATE + " > ? AND " + COLUMN_EVENT_DATE + " < ?";
         final String[] selectArgs = {category.toString(), today, futureDate};
         final String order = COLUMN_EVENT_DATE;
 
-        Cursor cursor = db.query(TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(TABLE_NAME, //Table to query
                 columns,                     //columns to return
                 selection,                   //columns for the WHERE clause
                 selectArgs,                  //The values for the WHERE clause
@@ -186,7 +186,7 @@ public class EventTable {
         final List<Event> eventList = new ArrayList<>();
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(TABLE_NAME, //Table to query
                 columns,                     //columns to return
                 null,               //columns for the WHERE clause
                 null,           //The values for the WHERE clause
@@ -223,10 +223,10 @@ public class EventTable {
         final String selection = EVENT_ORGANIZER_ID + " = ?";
         final String[] selectionArgs = {String.valueOf(organizerId)};
         final String sortOrder = COLUMN_EVENT_DATE + " ASC";
-        List<Event> eventList = new ArrayList<>();
+        final List<Event> eventList = new ArrayList<>();
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(TABLE_NAME, //Table to query
                 columns,                     //columns to return
                 selection,                   //columns for the WHERE clause
                 selectionArgs,               //The values for the WHERE clause
@@ -250,7 +250,7 @@ public class EventTable {
     public void updateEvent(final Event event) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT_NAME, event.getName());
         values.put(COLUMN_EVENT_DATE, event.getDate());
         values.put(COLUMN_EVENT_TIME, event.getTime());
@@ -275,19 +275,13 @@ public class EventTable {
         final String count = "SELECT count(*) FROM" + TABLE_NAME;
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-//        final String ALTER_TABLE = "ALTER TABLE " + TABLE_NAME +" RENAME TO TempOldTable";
-//        final String DROP_TEMP_OLD = "DROP TABLE TempOldTable";
-//        db.execSQL(ALTER_TABLE);
-//        db.execSQL(DROP_TEMP_OLD);
-//        db.execSQL(CREATE_EVENT_TABLE);
-
-        Cursor mcursor = db.rawQuery(count, null);
+        final Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         final int icount = mcursor.getInt(0);
         mcursor.close();
         db.close();
 
-        return  icount <= 0;
+        return icount <= 0;
     }
 
     public Event getEventById(final int eventId) {
@@ -309,7 +303,7 @@ public class EventTable {
         final String[] selectionArgs = {String.valueOf(eventId)};
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(TABLE_NAME, //Table to query
                 columns,                     //columns to return
                 selection,                   //columns for the WHERE clause
                 selectionArgs,               //The values for the WHERE clause

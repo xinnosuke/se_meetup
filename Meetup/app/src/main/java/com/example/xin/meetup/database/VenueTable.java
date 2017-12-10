@@ -119,7 +119,7 @@ public class VenueTable {
         final List<Venue> venueList = new ArrayList<>();
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(TABLE_NAME, //Table to query
                 columns,                     //columns to return
                 null,               //columns for the WHERE clause
                 null,           //The values for the WHERE clause
@@ -139,13 +139,12 @@ public class VenueTable {
         return venueList;
     }
 
-
     public void updateVenue(final Venue venue) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
         db.beginTransaction();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(COLUMN_VENUE_NAME, venue.getVenueName());
         values.put(COLUMN_OWNER_ID, venue.getOwnerId());
         values.put(COLUMN_LOCATION, venue.getLocation());
@@ -180,14 +179,14 @@ public class VenueTable {
     public boolean tableEmpty() {
         final String count = "SELECT count(*) FROM" + TABLE_NAME;
         final SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(count, null);
+        final Cursor cursor = db.rawQuery(count, null);
         cursor.moveToFirst();
 
         final int icount = cursor.getInt(0);
         cursor.close();
         db.close();
 
-        return  icount <= 0;
+        return icount <= 0;
     }
 
     public Venue getVenueById(final int venueId) {
@@ -210,7 +209,7 @@ public class VenueTable {
         final String[] selectionArgs = {String.valueOf(venueId)};
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(TABLE_NAME, //Table to query
                 columns,                     //columns to return
                 selection,                   //columns for the WHERE clause
                 selectionArgs,               //The values for the WHERE clause
