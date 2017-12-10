@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (!databaseHelper.userTable.checkUser(email, hashedPassword)) {
             Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+            return;
         }
 
         final int userId = databaseHelper.userTable.getUser(email).getId();
