@@ -16,14 +16,13 @@ import android.widget.Toast;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.util.Constants;
-import com.example.xin.meetup.util.CustomItemClickListener;
 import com.example.xin.meetup.main.EventPageFragment;
 import com.example.xin.meetup.main.EventRecyclerAdapter;
+import com.example.xin.meetup.util.Constants;
+import com.example.xin.meetup.util.CustomItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class RegisteredEventFragment extends Fragment {
 

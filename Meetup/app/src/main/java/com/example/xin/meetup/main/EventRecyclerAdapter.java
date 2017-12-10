@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.*;
 import com.example.xin.meetup.util.CustomItemClickListener;
 
 import java.util.List;

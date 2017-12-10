@@ -11,10 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.xin.meetup.*;
+import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.login.LoginActivity;
 import com.example.xin.meetup.util.Constants;
 
 public class EventPageFragment extends Fragment {
