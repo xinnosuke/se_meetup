@@ -1,6 +1,6 @@
 package com.example.xin.meetup.venue;
 
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;

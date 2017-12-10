@@ -1,10 +1,10 @@
 package com.example.xin.meetup.event.as_user;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,10 +16,11 @@ import android.widget.TextView;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.main.EventPageFragment;
-import com.example.xin.meetup.main.EventRecyclerAdapter;
 import com.example.xin.meetup.util.Constants;
 import com.example.xin.meetup.util.CustomItemClickListener;
+import com.example.xin.meetup.main.EventPageFragment;
+import com.example.xin.meetup.main.EventRecyclerAdapter;
+import com.example.xin.meetup.login.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
