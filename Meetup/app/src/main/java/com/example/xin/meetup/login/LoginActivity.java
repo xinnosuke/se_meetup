@@ -1,13 +1,13 @@
 package com.example.xin.meetup.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xin.meetup.R;
@@ -17,16 +17,16 @@ import com.example.xin.meetup.main.MainActivity;
 import com.example.xin.meetup.util.Constants;
 import com.example.xin.meetup.util.InputValidation;
 
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
-    private final Activity activity = LoginActivity.this;
+    private final AppCompatActivity activity = LoginActivity.this;
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
     private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
-    private Button buttonLogin;
-    private TextView textViewLinkRegister;
+    private AppCompatButton appCompatButtonLogin;
+    private AppCompatTextView textViewLinkRegister;
     private InputValidation inputValidation;
     private DBHelper databaseHelper;
 
@@ -34,6 +34,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
         initViews();
         initListeners();
@@ -45,12 +46,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
         textInputEditTextEmail = findViewById(R.id.textInputEditTextEmail);
         textInputEditTextPassword = findViewById(R.id.textInputEditTextPassword);
-        buttonLogin = findViewById(R.id.buttonLogin);
+        appCompatButtonLogin = findViewById(R.id.appCompatButtonLogin);
         textViewLinkRegister = findViewById(R.id.textViewLinkRegister);
     }
 
     private void initListeners() {
-        buttonLogin.setOnClickListener(this);
+        appCompatButtonLogin.setOnClickListener(this);
         textViewLinkRegister.setOnClickListener(this);
     }
 
@@ -62,11 +63,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(final View v) {
         switch (v.getId()) {
-            case R.id.buttonLogin:
+            case R.id.appCompatButtonLogin:
                 login();
                 break;
             case R.id.textViewLinkRegister:
-                final Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
+                // Navigate to RegisterActivity
+                Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intentRegister);
                 break;
         }
