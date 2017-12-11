@@ -215,8 +215,8 @@ public class CreateNewEventFragment extends Fragment {
     }
 
     public void goBackToEventList() {
-        final Intent intent = new Intent(getContext(), YourEventListFragment.class);
-        startActivity(intent);
+        final FragmentManager fm = getFragmentManager();
+        fm.popBackStack();
     }
 
     private boolean validInput() {
