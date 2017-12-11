@@ -17,10 +17,10 @@ import java.util.List;
 
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.EventViewHolder> {
 
-    private List<Event> listEvent;
-    private DBHelper dbHelper;
-    FragmentManager fragmentManager;
-    CustomItemClickListener listener;
+    private final List<Event> listEvent;
+    private final DBHelper dbHelper;
+    private final FragmentManager fragmentManager;
+    private final CustomItemClickListener listener;
 
     public EventRecyclerAdapter(final List<Event> listEvent, final DBHelper databaseHelper,
                                 final FragmentManager fragmentManager, final CustomItemClickListener listener) {
@@ -48,11 +48,10 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
         public Event event;
-        public AppCompatTextView textViewEventName;
-        public AppCompatTextView textViewDate;
-        public AppCompatTextView textViewLocation;
-        public AppCompatImageView thumbnail;
-
+        private final AppCompatTextView textViewEventName;
+        private final AppCompatTextView textViewDate;
+        private final AppCompatTextView textViewLocation;
+        private final AppCompatImageView thumbnail;
 
         public EventViewHolder(final View view, final CustomItemClickListener listener) {
             super(view);
