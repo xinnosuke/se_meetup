@@ -67,9 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 login();
                 break;
             case R.id.textViewLinkRegister:
-                // Navigate to RegisterActivity
-                Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(intentRegister);
+                final Intent registerIntent = RegisterActivity.createIntent(getApplicationContext());
+                startActivity(registerIntent);
                 break;
         }
     }
@@ -91,9 +90,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         final int userId = databaseHelper.userTable.getUser(email).getId();
 
-        final Intent accountsIntent = new Intent(activity, MainActivity.class);
-        accountsIntent.putExtra(Constants.USER_ID_ARG, userId);
-        startActivity(accountsIntent);
+        final Intent mainIntent = MainActivity.createIntent(activity, userId);
+        startActivity(mainIntent);
         finish();
     }
 

@@ -1,8 +1,8 @@
 package com.example.xin.meetup.event.as_organizer;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -13,14 +13,11 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.xin.meetup.R;
@@ -36,7 +33,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 public class CreateNewEventFragment extends Fragment {
+
+    public final static String CATEGORY_SELECT_STR = "Select category";
 
     private TextInputLayout textInputLayoutEventName;
     private TextInputLayout textInputLayoutLocation;
@@ -103,7 +105,7 @@ public class CreateNewEventFragment extends Fragment {
         final Spinner spinner = rootView.findViewById(R.id.spinner_event_category);
 
         final List<String> categories = new ArrayList<>();
-        categories.add("Select");
+        categories.add(CATEGORY_SELECT_STR);
         categories.add(Event.Category.Art.toString());
         categories.add(Event.Category.Outdoor.toString());
         categories.add(Event.Category.Food.toString());
@@ -133,48 +135,37 @@ public class CreateNewEventFragment extends Fragment {
     }
 
     private void initListeners() {
-        buttonDate.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-                new DatePickerDialog(getContext(), date,
-                        myCalendar.get(Calendar.YEAR),
-                        myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        buttonDate.setOnClickListener(view -> new DatePickerDialog(
+                getContext(),
+                date,
+                myCalendar.get(Calendar.YEAR),
+                myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)).show());
+
+        buttonTime.setOnClickListener(view -> new TimePickerDialog(
+                getContext(),
+                time,
+                calendarTime.get(Calendar.HOUR_OF_DAY),
+                calendarTime.get(Calendar.MINUTE),
+                true).show());
+
+        appCompatButtonCreateEvent.setOnClickListener(view -> {
+            if (createNewEvent()) {
+                goBackToEventList(RESULT_OK);
             }
         });
 
-        buttonTime.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-                new TimePickerDialog(getContext(), time,
-                        calendarTime.get(Calendar.HOUR_OF_DAY),
-                        calendarTime.get(Calendar.MINUTE), true).show();
-            }
+        appCompatTextViewViewVenue.setOnClickListener(view -> {
+            //TODO needs to be activity
+            final FragmentManager fragmentManager = getFragmentManager();
+            final Fragment fragment = VenueListFragment.newInstance();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.create_event_fragment, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
-        appCompatButtonCreateEvent.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-                if (createNewEvent()) {
-                    goBackToEventList();
-                }
-            }
-        });
-
-        appCompatTextViewViewVenue.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = getFragmentManager();
-                Fragment fragment = VenueListFragment.newInstance();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.create_event_fragment, fragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-        appCompatTextViewCancel.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-                goBackToEventList();
-            }
-        });
+        appCompatTextViewCancel.setOnClickListener(view -> goBackToEventList(RESULT_CANCELED));
     }
 
     private void initObjects() {
@@ -214,16 +205,10 @@ public class CreateNewEventFragment extends Fragment {
         return true;
     }
 
-    public void goBackToEventList() {
-        final FragmentManager fm = getFragmentManager();
-
-//        final Fragment eventList = fm.findFragmentById(R.id.event_list_fragment);
-//        fm.beginTransaction()
-//                .detach(eventList)
-//                .attach(eventList)
-//                .commitAllowingStateLoss();
-
-        fm.popBackStack();
+    private void goBackToEventList(final int resultCode) {
+        final Activity activity = getActivity();
+        activity.setResult(resultCode);
+        activity.finish();
     }
 
     private boolean validInput() {
@@ -245,18 +230,12 @@ public class CreateNewEventFragment extends Fragment {
         return valid;
     }
 
-    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateDateLabel();
-        }
+    final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateDateLabel();
     };
-
-    public void onNothingSelected(AdapterView<?> arg0) {
-    }
 
     private void updateDateLabel() {
         final String myFormat = "yyyy-MM-dd";
@@ -266,13 +245,10 @@ public class CreateNewEventFragment extends Fragment {
 
     }
 
-    final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(final TimePicker view, final int hourOfDay, final int minute) {
-            calendarTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            calendarTime.set(Calendar.MINUTE, minute);
-            updateTimeLabel();
-        }
+    final TimePickerDialog.OnTimeSetListener time = (view, hourOfDay, minute) -> {
+        calendarTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendarTime.set(Calendar.MINUTE, minute);
+        updateTimeLabel();
     };
 
     private void updateTimeLabel() {
@@ -283,9 +259,6 @@ public class CreateNewEventFragment extends Fragment {
     }
 
     private boolean didSelectCategory() {
-        if (category.equals("Select")) {
-            return false;
-        }
-        return true;
+        return !category.equals(CATEGORY_SELECT_STR);
     }
 }

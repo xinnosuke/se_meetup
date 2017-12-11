@@ -1,5 +1,7 @@
 package com.example.xin.meetup.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,6 +19,12 @@ import com.example.xin.meetup.util.Constants;
 public class MainActivity extends AppCompatActivity {
 
     private int userId;
+
+    public static Intent createIntent(final Context context, final int userId) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(Constants.USER_ID_ARG, userId);
+        return intent;
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

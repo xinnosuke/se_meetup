@@ -1,5 +1,6 @@
 package com.example.xin.meetup.event.as_organizer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -24,12 +25,18 @@ import com.example.xin.meetup.util.CustomItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class YourEventListFragment extends Fragment {
 
+    private final static int REQUEST_CREATE_NEW_EVENT = 0;
+
     private int userId;
-    private List<Event> listEvent;
+    private final List<Event> listEvent = new ArrayList<>();
     private DBHelper dbHelper;
-//    private boolean redrawOnResume;
+    private EventRecyclerAdapter eventRecyclerAdapter;
+    private RecyclerView recyclerViewEvent;
+    private TextView noEventTextView;
 
     public static Fragment newInstance(final int userId) {
         final Fragment fragment = new YourEventListFragment();
@@ -45,54 +52,68 @@ public class YourEventListFragment extends Fragment {
 
         final Bundle bundle = getArguments();
         userId = bundle.getInt(Constants.USER_ID_ARG);
-    }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        if (redrawOnResume) {
-//            redrawOnResume = false;
-//
-//            getFragmentManager().beginTransaction()
-//                    .detach(this)
-//                    .attach(this)
-//                    .commitAllowingStateLoss();
-//        }
-//    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_event_list, container, false);
 
         dbHelper = DBHelper.getInstance(getContext());
-        listEvent = new ArrayList<>();
+        getDataFromDB();
+    }
 
-        getDataFromSQLite();
+    @Override @Nullable
+    public View onCreateView(
+            final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState)
+    {
+        final View rootView = inflater.inflate(R.layout.fragment_event_list, container, false);
 
-        final TextView noEventTextView = rootView.findViewById(R.id.empty_view);
+        noEventTextView = rootView.findViewById(R.id.empty_view);
 
-        final CustomItemClickListener listener = new CustomItemClickListener() {
-            public void onItemClick(final View view, final int position, final int eventId) {
-                final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, Constants.USER_TYPE_ORGANIZER);
+        final CustomItemClickListener listener = (view, position, eventId) -> {
+            final FragmentManager fragmentManager = getFragmentManager();
+            final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, Constants.USER_TYPE_ORGANIZER);
 
-                fragmentManager.beginTransaction()
-                        .replace(R.id.event_list_fragment, eventPageFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
+            fragmentManager.beginTransaction()
+                    .replace(R.id.event_list_fragment, eventPageFragment)
+                    .addToBackStack(null)
+                    .commit();
         };
 
-        final EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(listEvent, dbHelper, getFragmentManager(), listener);
-        final RecyclerView recyclerViewEvent = rootView.findViewById(R.id.recycler_view_event);
+        eventRecyclerAdapter = new EventRecyclerAdapter(listEvent, dbHelper, getFragmentManager(), listener);
+        recyclerViewEvent = rootView.findViewById(R.id.recycler_view_event);
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerViewEvent.setLayoutManager(mLayoutManager);
         recyclerViewEvent.setItemAnimator(new DefaultItemAnimator());
         recyclerViewEvent.setHasFixedSize(true);
         recyclerViewEvent.setAdapter(eventRecyclerAdapter);
 
+        updateVisibility();
+
+        final FloatingActionButton fab = rootView.findViewById(R.id.createEventButton);
+        fab.bringToFront();
+        fab.setOnClickListener(view -> {
+            final Intent createNewEventIntent = CreateNewEventActivity.createIntent(getContext(), userId);
+            startActivityForResult(createNewEventIntent, REQUEST_CREATE_NEW_EVENT);
+        });
+
+        return rootView;
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        switch (requestCode) {
+            case REQUEST_CREATE_NEW_EVENT:
+                if (resultCode == RESULT_OK) {
+                    getDataFromDB();
+                    updateVisibility();
+                    eventRecyclerAdapter.notifyDataSetChanged();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
+    }
+
+    private void updateVisibility() {
         if (listEvent.isEmpty()) {
             recyclerViewEvent.setVisibility(View.INVISIBLE);
             noEventTextView.setVisibility(View.VISIBLE);
@@ -101,25 +122,9 @@ public class YourEventListFragment extends Fragment {
             recyclerViewEvent.setVisibility(View.VISIBLE);
             noEventTextView.setVisibility(View.INVISIBLE);
         }
-
-        final FloatingActionButton fab = rootView.findViewById(R.id.createEventButton);
-        fab.bringToFront();
-        fab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-//                redrawOnResume = true;
-                final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment fragment = CreateNewEventFragment.newInstance(userId);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.event_list_fragment, fragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-        return rootView;
     }
 
-    private void getDataFromSQLite() {
+    private void getDataFromDB() {
         if (!dbHelper.eventTable.tableEmpty()) {
             if (dbHelper.eventTable.organizerHasEvent(userId)) {
                 listEvent.clear();

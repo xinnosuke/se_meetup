@@ -1,5 +1,7 @@
 package com.example.xin.meetup.login;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -32,6 +34,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private InputValidation inputValidation;
     private DBHelper databaseHelper;
     private User user;
+
+    public static Intent createIntent(final Context context) {
+        return new Intent(context, RegisterActivity.class);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
