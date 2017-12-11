@@ -48,6 +48,8 @@
             android:label="@string/title_activity_main" />
 
         <activity android:name=".event.as_organizer.CreateNewEventActivity" />
+        <activity android:name=".venue.VenueListActivity" />
+        <activity android:name=".venue.VenuePageActivity" />
     </application>
 
 </manifest>

@@ -3,12 +3,12 @@ package com.example.xin.meetup.event.as_organizer;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -25,7 +25,7 @@ import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.util.Constants;
 import com.example.xin.meetup.util.InputValidation;
-import com.example.xin.meetup.venue.VenueListFragment;
+import com.example.xin.meetup.venue.VenueListActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -156,13 +156,8 @@ public class CreateNewEventFragment extends Fragment {
         });
 
         appCompatTextViewViewVenue.setOnClickListener(view -> {
-            //TODO needs to be activity
-            final FragmentManager fragmentManager = getFragmentManager();
-            final Fragment fragment = VenueListFragment.newInstance();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.create_event_fragment, fragment)
-                    .addToBackStack(null)
-                    .commit();
+            final Intent venueListIntent = VenueListActivity.createIntent(getContext());
+            startActivity(venueListIntent);
         });
 
         appCompatTextViewCancel.setOnClickListener(view -> goBackToEventList(RESULT_CANCELED));

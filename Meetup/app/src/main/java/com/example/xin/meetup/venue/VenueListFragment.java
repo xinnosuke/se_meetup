@@ -1,9 +1,9 @@
 package com.example.xin.meetup.venue;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class VenueListFragment extends Fragment {
 
-    private List<Venue> venueList;
+    private final List<Venue> venueList = new ArrayList<>();
     private DBHelper dbHelper;
 
     public static Fragment newInstance() {
@@ -32,6 +32,9 @@ public class VenueListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dbHelper = DBHelper.getInstance(getContext());
+        getDataFromDB();
     }
 
     @Nullable
@@ -39,21 +42,9 @@ public class VenueListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_venue_list, container, false);
 
-        dbHelper = DBHelper.getInstance(getContext());
-        venueList = new ArrayList<>();
-
-        getDataFromSQLite();
-
-        final CustomItemClickListener listener = new CustomItemClickListener() {
-            public void onItemClick(final View view, final int position, final int venueId) {
-                final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment venuePageFragment = VenuePageFragment.newInstance(venueId);
-
-                fragmentManager.beginTransaction()
-                        .replace(R.id.venue_list_fragment, venuePageFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
+        final CustomItemClickListener listener = (view, position, venueId) -> {
+            final Intent venuePageIntent = VenuePageActivity.createIntent(getContext(), venueId);
+            startActivity(venuePageIntent);
         };
 
         final TextView noEventTextView = rootView.findViewById(R.id.empty_view_venue);
@@ -77,7 +68,7 @@ public class VenueListFragment extends Fragment {
         return rootView;
     }
 
-    private void getDataFromSQLite() {
+    private void getDataFromDB() {
         venueList.clear();
         venueList.addAll(dbHelper.venueTable.getAllVenue());
     }

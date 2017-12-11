@@ -12,15 +12,15 @@ import android.widget.TextView;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Venue;
+import com.example.xin.meetup.util.Constants;
 
 public class VenuePageFragment extends Fragment {
-    private static final String VENUE_ID = "VenueId";
     private int venueId;
 
     public static VenuePageFragment newInstance(final int venueId) {
         final VenuePageFragment fragment = new VenuePageFragment();
         final Bundle args = new Bundle();
-        args.putInt(VENUE_ID, venueId);
+        args.putInt(Constants.VENUE_ID_ARG, venueId);
         fragment.setArguments(args);
 
         return fragment;
@@ -29,7 +29,7 @@ public class VenuePageFragment extends Fragment {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        venueId = getArguments().getInt(VENUE_ID);
+        venueId = getArguments().getInt(Constants.VENUE_ID_ARG);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class VenuePageFragment extends Fragment {
         final TextView costTextView = rootView.findViewById(R.id.venue_cost);
         final TextView phoneTextView = rootView.findViewById(R.id.venue_phone_textView);
         final TextView emailTextView = rootView.findViewById(R.id.venue_email_textView);
-        final TextView hourslTextView = rootView.findViewById(R.id.venue_hours_extView);
+        final TextView hoursTextView = rootView.findViewById(R.id.venue_hours_extView);
         final TextView capacityTextView = rootView.findViewById(R.id.venue_capacity_textView);
         final TextView descriptionTextView = rootView.findViewById(R.id.venue_description_textView);
 
@@ -54,7 +54,7 @@ public class VenuePageFragment extends Fragment {
         costTextView.setText(venue.getCost());
         phoneTextView.setText(venue.getPhone());
         emailTextView.setText(venue.getEmail());
-        hourslTextView.setText(hours);
+        hoursTextView.setText(hours);
         capacityTextView.setText(String.valueOf(venue.getCapacity()));
         descriptionTextView.setText(venue.getDescription());
 

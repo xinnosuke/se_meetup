@@ -17,16 +17,19 @@ import java.util.List;
 
 public class VenueRecyclerViewAdapter extends RecyclerView.Adapter<VenueRecyclerViewAdapter.VenueViewHolder> {
 
-    private List<Venue> venueList;
-    private DBHelper dbHelper;
-    FragmentManager fragmentManager;
-    CustomItemClickListener listener;
+    private final List<Venue> venueList;
+    private final DBHelper dbHelper;
+    private final FragmentManager fragmentManager;
+    private final CustomItemClickListener listener;
 
-
-    public VenueRecyclerViewAdapter(final List<Venue> venueList, final DBHelper databaseHelper,
-                                    final FragmentManager fragmentManager, final CustomItemClickListener listener) {
+    public VenueRecyclerViewAdapter(
+            final List<Venue> venueList,
+            final DBHelper dbHelper,
+            final FragmentManager fragmentManager,
+            final CustomItemClickListener listener)
+    {
         this.venueList = venueList;
-        dbHelper = databaseHelper;
+        this.dbHelper = dbHelper;
         this.fragmentManager = fragmentManager;
         this.listener = listener;
     }
@@ -55,7 +58,6 @@ public class VenueRecyclerViewAdapter extends RecyclerView.Adapter<VenueRecycler
         private AppCompatTextView textViewCost;
         private AppCompatTextView textViewLocation;
         private AppCompatImageView imageView;
-
 
         public VenueViewHolder(final View view, final CustomItemClickListener listener) {
             super(view);
