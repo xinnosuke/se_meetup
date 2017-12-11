@@ -62,12 +62,10 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             textViewLocation = view.findViewById(R.id.event_location);
             thumbnail = view.findViewById(R.id.thumbnail);
 
-            final int eventId = event.getId();
-
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    listener.onItemClick(view, getAdapterPosition(), eventId);
+                    listener.onItemClick(view, getAdapterPosition(), event.getId());
                     final int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
                         EventRecyclerAdapter.this.notifyDataSetChanged();
