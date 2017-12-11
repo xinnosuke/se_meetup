@@ -1,5 +1,6 @@
 package com.example.xin.meetup.event.as_user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
+import com.example.xin.meetup.main.EventPageActivity;
 import com.example.xin.meetup.main.EventPageFragment;
 import com.example.xin.meetup.main.EventRecyclerAdapter;
 import com.example.xin.meetup.util.Constants;
@@ -67,16 +69,9 @@ public class SearchResultListFragment extends Fragment {
 
         final TextView noEventTextView = rootView.findViewById(R.id.empty_view);
 
-        final CustomItemClickListener listener = new CustomItemClickListener() {
-            public void onItemClick(final View view, final int position, final int eventId) {
-                final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, Constants.USER_TYPE_GUEST);
-
-                fragmentManager.beginTransaction()
-                        .replace(R.id.event_list_fragment, eventPageFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
+        final CustomItemClickListener listener = (view, position, eventId) -> {
+            final Intent eventPageIntent = EventPageActivity.createIntent(getContext(), eventId, userId, Constants.USER_TYPE_GUEST);
+            startActivity(eventPageIntent);
         };
 
         final EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(listEvent, dbHelper, getFragmentManager(), listener);

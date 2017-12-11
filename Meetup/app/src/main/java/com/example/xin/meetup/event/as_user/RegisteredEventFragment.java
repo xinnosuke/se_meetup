@@ -1,5 +1,6 @@
 package com.example.xin.meetup.event.as_user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
+import com.example.xin.meetup.main.EventPageActivity;
 import com.example.xin.meetup.main.EventPageFragment;
 import com.example.xin.meetup.main.EventRecyclerAdapter;
 import com.example.xin.meetup.util.Constants;
@@ -58,18 +60,9 @@ public class RegisteredEventFragment extends Fragment {
 
         final TextView noEventTextView = rootView.findViewById(R.id.empty_view_registered);
 
-        final CustomItemClickListener listener = new CustomItemClickListener() {
-            public void onItemClick(final View view, final int position, final int eventId) {
-                Toast.makeText(getContext(), "EventId " + eventId, Toast.LENGTH_SHORT).show();
-
-                final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, null);
-
-                fragmentManager.beginTransaction()
-                        .replace(R.id.event_registered_frame, eventPageFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
+        final CustomItemClickListener listener = (view, position, eventId) -> {
+            final Intent eventPageIntent = EventPageActivity.createIntent(getContext(), eventId, userId, null);
+            startActivity(eventPageIntent);
         };
 
         final EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(listEvent, dbHelper, getFragmentManager(), listener);

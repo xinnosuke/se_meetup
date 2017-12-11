@@ -50,6 +50,7 @@
         <activity android:name=".event.as_organizer.CreateNewEventActivity" />
         <activity android:name=".venue.VenueListActivity" />
         <activity android:name=".venue.VenuePageActivity" />
+        <activity android:name=".main.EventPageActivity" />
     </application>
 
 </manifest>

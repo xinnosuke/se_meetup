@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
+import com.example.xin.meetup.main.EventPageActivity;
 import com.example.xin.meetup.main.EventPageFragment;
 import com.example.xin.meetup.main.EventRecyclerAdapter;
 import com.example.xin.meetup.util.Constants;
@@ -30,6 +31,7 @@ import static android.app.Activity.RESULT_OK;
 public class YourEventListFragment extends Fragment {
 
     private final static int REQUEST_CREATE_NEW_EVENT = 0;
+    private final static int REQUEST_EDIT_EVENT = 1;
 
     private int userId;
     private final List<Event> listEvent = new ArrayList<>();
@@ -68,13 +70,8 @@ public class YourEventListFragment extends Fragment {
         noEventTextView = rootView.findViewById(R.id.empty_view);
 
         final CustomItemClickListener listener = (view, position, eventId) -> {
-            final FragmentManager fragmentManager = getFragmentManager();
-            final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, Constants.USER_TYPE_ORGANIZER);
-
-            fragmentManager.beginTransaction()
-                    .replace(R.id.event_list_fragment, eventPageFragment)
-                    .addToBackStack(null)
-                    .commit();
+            final Intent eventPageIntent = EventPageActivity.createIntent(getContext(), eventId, userId, Constants.USER_TYPE_ORGANIZER);
+            startActivityForResult(eventPageIntent, REQUEST_EDIT_EVENT);
         };
 
         eventRecyclerAdapter = new EventRecyclerAdapter(listEvent, dbHelper, getFragmentManager(), listener);
@@ -101,6 +98,7 @@ public class YourEventListFragment extends Fragment {
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         switch (requestCode) {
             case REQUEST_CREATE_NEW_EVENT:
+            case REQUEST_EDIT_EVENT:
                 if (resultCode == RESULT_OK) {
                     getDataFromDB();
                     updateVisibility();

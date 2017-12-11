@@ -1,8 +1,8 @@
 package com.example.xin.meetup.main;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +10,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.util.Constants;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 public class EventPageFragment extends Fragment {
-    private static final String EVENT_ID_ARG = "EventId";
-    private static final String USER_TYPE_ARG = "UserType";
     private int eventId;
     private int userId;
     private String userType;
@@ -31,9 +31,9 @@ public class EventPageFragment extends Fragment {
     {
         final EventPageFragment fragment = new EventPageFragment();
         final Bundle args = new Bundle();
-        args.putInt(EVENT_ID_ARG, eventId);
+        args.putInt(Constants.EVENT_ID_ARG, eventId);
         args.putInt(Constants.USER_ID_ARG, userId);
-        if (userType != null) args.putString(USER_TYPE_ARG, userType);
+        args.putString(Constants.USER_TYPE_ARG, userType);
         fragment.setArguments(args);
 
         return fragment;
@@ -44,9 +44,11 @@ public class EventPageFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
-        eventId = args.getInt(EVENT_ID_ARG);
+        eventId = args.getInt(Constants.EVENT_ID_ARG);
         userId = args.getInt(Constants.USER_ID_ARG);
-        userType = args.getString(USER_TYPE_ARG);
+        userType = args.getString(Constants.USER_TYPE_ARG);
+
+        getActivity().setResult(RESULT_CANCELED);
     }
 
     @Override
@@ -94,7 +96,10 @@ public class EventPageFragment extends Fragment {
         if (userType != null && userType.equals(Constants.USER_TYPE_ORGANIZER)) {
             deleteButton.setOnClickListener(view -> {
                 dbHelper.eventTable.deleteEvent(eventId);
-                getFragmentManager().popBackStack();
+
+                final Activity activity = getActivity();
+                activity.setResult(RESULT_OK);
+                activity.finish();
             });
         } else {
             deleteButton.setVisibility(View.INVISIBLE);
