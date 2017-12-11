@@ -26,8 +26,8 @@ import java.util.List;
 
 public class SearchResultListFragment extends Fragment {
 
-    private final static String CATEGORY = "Category";
-    private final static String RANGE = "Range";
+    private final static String CATEGORY_ARG = "Category";
+    private final static String RANGE_ARG = "Range";
 
     private List<Event> listEvent;
     private DBHelper dbHelper;
@@ -38,9 +38,9 @@ public class SearchResultListFragment extends Fragment {
     public static Fragment newInstance(final int userId, final String category, final int range) {
         final Fragment fragment = new SearchResultListFragment();
         final Bundle args = new Bundle();
-        args.putInt(Constants.USER_ID, userId);
-        args.putString(CATEGORY, category);
-        args.putInt(RANGE, range);
+        args.putInt(Constants.USER_ID_ARG, userId);
+        args.putString(CATEGORY_ARG, category);
+        args.putInt(RANGE_ARG, range);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,9 +50,9 @@ public class SearchResultListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         final Bundle bundle = getArguments();
-        userId = bundle.getInt(Constants.USER_ID);
-        category = bundle.getString(CATEGORY);
-        range = bundle.getInt(RANGE);
+        userId = bundle.getInt(Constants.USER_ID_ARG);
+        category = bundle.getString(CATEGORY_ARG);
+        range = bundle.getInt(RANGE_ARG);
     }
 
     @Nullable

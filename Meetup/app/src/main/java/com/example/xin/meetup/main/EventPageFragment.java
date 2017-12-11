@@ -17,8 +17,8 @@ import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.util.Constants;
 
 public class EventPageFragment extends Fragment {
-    private static final String EVENT_ID = "EventId";
-    private static final String USER_TYPE = "UserType";
+    private static final String EVENT_ID_ARG = "EventId";
+    private static final String USER_TYPE_ARG = "UserType";
     private int eventId;
     private int userId;
     private String userType;
@@ -30,9 +30,9 @@ public class EventPageFragment extends Fragment {
     {
         final EventPageFragment fragment = new EventPageFragment();
         final Bundle args = new Bundle();
-        args.putInt(EVENT_ID, eventId);
-        args.putInt(Constants.USER_ID, userId);
-        if (userType != null) args.putString(USER_TYPE, userType);
+        args.putInt(EVENT_ID_ARG, eventId);
+        args.putInt(Constants.USER_ID_ARG, userId);
+        if (userType != null) args.putString(USER_TYPE_ARG, userType);
         fragment.setArguments(args);
 
         return fragment;
@@ -43,9 +43,9 @@ public class EventPageFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
-        eventId = args.getInt(EVENT_ID);
-        userId = args.getInt(Constants.USER_ID);
-        userType = args.getString(USER_TYPE);
+        eventId = args.getInt(EVENT_ID_ARG);
+        userId = args.getInt(Constants.USER_ID_ARG);
+        userType = args.getString(USER_TYPE_ARG);
     }
 
     @Override

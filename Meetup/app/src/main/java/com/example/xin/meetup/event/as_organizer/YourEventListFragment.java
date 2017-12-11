@@ -33,7 +33,7 @@ public class YourEventListFragment extends Fragment {
     public static Fragment newInstance(final int userId) {
         final Fragment fragment = new YourEventListFragment();
         final Bundle args = new Bundle();
-        args.putInt(Constants.USER_ID, userId);
+        args.putInt(Constants.USER_ID_ARG, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,7 +43,7 @@ public class YourEventListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         final Bundle bundle = getArguments();
-        userId = bundle.getInt(Constants.USER_ID);
+        userId = bundle.getInt(Constants.USER_ID_ARG);
     }
 
     @Nullable

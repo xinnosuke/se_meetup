@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final int userId = databaseHelper.userTable.getUser(email).getId();
 
         final Intent accountsIntent = new Intent(activity, MainActivity.class);
-        accountsIntent.putExtra(Constants.USER_ID, userId);
+        accountsIntent.putExtra(Constants.USER_ID_ARG, userId);
         startActivity(accountsIntent);
         finish();
     }

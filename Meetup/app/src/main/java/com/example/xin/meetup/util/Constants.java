@@ -1,5 +1,6 @@
 package com.example.xin.meetup.util;
 
 public class Constants {
-    final public static String USER_ID = "UserId";
+    public final static String CATEGORY_DEFAULT_STR = "Category";
+    public final static String USER_ID_ARG = "UserId";
 }

@@ -30,7 +30,7 @@ public class SearchForEventsFragment extends Fragment {
     public static Fragment newInstance(final int userId) {
         final Fragment fragment = new SearchForEventsFragment();
         final Bundle args = new Bundle();
-        args.putInt(Constants.USER_ID, userId);
+        args.putInt(Constants.USER_ID_ARG, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,7 +40,7 @@ public class SearchForEventsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
-        userId = args.getInt(Constants.USER_ID);
+        userId = args.getInt(Constants.USER_ID_ARG);
     }
 
     @Nullable
@@ -54,7 +54,7 @@ public class SearchForEventsFragment extends Fragment {
         final Spinner spinnerWhen = rootView.findViewById(R.id.spinner_when);
 
         final List<String> categories = new ArrayList<>();
-        categories.add("Category");
+        categories.add(Constants.CATEGORY_DEFAULT_STR);
         categories.add(Event.Category.Art.toString());
         categories.add(Event.Category.Outdoor.toString());
         categories.add(Event.Category.Food.toString());
@@ -117,6 +117,11 @@ public class SearchForEventsFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                if (category.isEmpty() || category.equals(Constants.CATEGORY_DEFAULT_STR)) {
+                    Toast.makeText(getContext(), "Please select category", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 final Fragment fragment = SearchResultListFragment.newInstance(userId, category, range);
                 final FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()

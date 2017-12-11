@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         final Bundle intentArgs = getIntent().getExtras();
-        userId = intentArgs.getInt(Constants.USER_ID);
+        userId = intentArgs.getInt(Constants.USER_ID_ARG);
         setContentView(R.layout.activity_main);
 
         final BottomNavigationView navigation = findViewById(R.id.bottom_navigation);

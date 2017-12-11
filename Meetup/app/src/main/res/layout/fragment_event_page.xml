@@ -127,7 +127,6 @@
                     android:text="Category" />
             </TableRow>
 
-
             <TableRow
                 android:background="@color/colorEventPageBackground">
                 <ImageView

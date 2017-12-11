@@ -64,7 +64,7 @@ public class CreateNewEventFragment extends Fragment {
     public static Fragment newInstance(final int userId) {
         final Fragment fragment = new CreateNewEventFragment();
         final Bundle args = new Bundle();
-        args.putInt(Constants.USER_ID, userId);
+        args.putInt(Constants.USER_ID_ARG, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,7 +74,7 @@ public class CreateNewEventFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
-        userId = args.getInt(Constants.USER_ID);
+        userId = args.getInt(Constants.USER_ID_ARG);
     }
 
     @Nullable
