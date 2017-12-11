@@ -29,6 +29,7 @@ public class YourEventListFragment extends Fragment {
     private int userId;
     private List<Event> listEvent;
     private DBHelper dbHelper;
+//    private boolean redrawOnResume;
 
     public static Fragment newInstance(final int userId) {
         final Fragment fragment = new YourEventListFragment();
@@ -46,6 +47,20 @@ public class YourEventListFragment extends Fragment {
         userId = bundle.getInt(Constants.USER_ID_ARG);
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        if (redrawOnResume) {
+//            redrawOnResume = false;
+//
+//            getFragmentManager().beginTransaction()
+//                    .detach(this)
+//                    .attach(this)
+//                    .commitAllowingStateLoss();
+//        }
+//    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,7 +76,7 @@ public class YourEventListFragment extends Fragment {
         final CustomItemClickListener listener = new CustomItemClickListener() {
             public void onItemClick(final View view, final int position, final int eventId) {
                 final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, "organizer");
+                final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, Constants.USER_TYPE_ORGANIZER);
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.event_list_fragment, eventPageFragment)
@@ -87,10 +102,11 @@ public class YourEventListFragment extends Fragment {
             noEventTextView.setVisibility(View.INVISIBLE);
         }
 
-        final FloatingActionButton fab = rootView.findViewById(R.id.fab);
+        final FloatingActionButton fab = rootView.findViewById(R.id.createEventButton);
         fab.bringToFront();
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+//                redrawOnResume = true;
                 final FragmentManager fragmentManager = getFragmentManager();
                 final Fragment fragment = CreateNewEventFragment.newInstance(userId);
                 fragmentManager.beginTransaction()

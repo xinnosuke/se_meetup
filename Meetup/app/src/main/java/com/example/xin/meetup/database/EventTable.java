@@ -265,9 +265,9 @@ public class EventTable {
         db.close();
     }
 
-    public void deleteEvent(final Event event) {
+    public void deleteEvent(final int eventId) {
         final SQLiteDatabase db = helper.getWritableDatabase();
-        db.delete(TABLE_NAME, COLUMN_EVENT_ID + " = ?", new String[]{String.valueOf(event.getId())});
+        db.delete(TABLE_NAME, COLUMN_EVENT_ID + " = ?", new String[]{String.valueOf(eventId)});
         db.close();
     }
 

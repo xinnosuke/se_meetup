@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:id="@+id/create_event_fragment"
-    tools:context=".event.as_organizer.CreateNewEventFragment">
+    tools:context=".event.as_organizer.CreateNewEventFragment"
+    android:clickable="true"
+    android:focusable="true">
 
     <FrameLayout
         android:layout_width="match_parent"

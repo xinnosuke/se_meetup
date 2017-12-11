@@ -70,7 +70,7 @@ public class SearchResultListFragment extends Fragment {
         final CustomItemClickListener listener = new CustomItemClickListener() {
             public void onItemClick(final View view, final int position, final int eventId) {
                 final FragmentManager fragmentManager = getFragmentManager();
-                final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, "user");
+                final Fragment eventPageFragment = EventPageFragment.newInstance(eventId, userId, Constants.USER_TYPE_GUEST);
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.event_list_fragment, eventPageFragment)
@@ -96,7 +96,7 @@ public class SearchResultListFragment extends Fragment {
             noEventTextView.setVisibility(View.INVISIBLE);
         }
 
-        final FloatingActionButton fab = rootView.findViewById(R.id.fab);
+        final FloatingActionButton fab = rootView.findViewById(R.id.createEventButton);
         fab.setVisibility(View.GONE);
 
         return rootView;

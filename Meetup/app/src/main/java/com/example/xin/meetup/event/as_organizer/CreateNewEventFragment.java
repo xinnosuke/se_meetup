@@ -216,6 +216,13 @@ public class CreateNewEventFragment extends Fragment {
 
     public void goBackToEventList() {
         final FragmentManager fm = getFragmentManager();
+
+//        final Fragment eventList = fm.findFragmentById(R.id.event_list_fragment);
+//        fm.beginTransaction()
+//                .detach(eventList)
+//                .attach(eventList)
+//                .commitAllowingStateLoss();
+
         fm.popBackStack();
     }
 

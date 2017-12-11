@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,19 +76,28 @@ public class EventPageFragment extends Fragment {
         organizerTextView.setText(organizerName);
         descriptionTextView.setText(event.getDescription());
 
-        if (userType != null && userType.equals("user")) {
-            final FloatingActionButton fb = rootView.findViewById(R.id.fab_rsvp);
-            fb.setVisibility(View.VISIBLE);
-            fb.bringToFront();
-            fb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DBHelper dbHelper = DBHelper.getInstance(getContext());
-                    dbHelper.guestTable.addGuest(eventId, userId);
-                    Toast.makeText(getContext(), "Woohoo!", Toast.LENGTH_SHORT).show();
+//        if (userType != null && userType.equals(Constants.USER_TYPE_GUEST)) {
+//            final FloatingActionButton fb = rootView.findViewById(R.id.fab_rsvp);
+//            fb.setVisibility(View.VISIBLE);
+//            fb.bringToFront();
+//            fb.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    DBHelper dbHelper = DBHelper.getInstance(getContext());
+//                    dbHelper.guestTable.addGuest(eventId, userId);
+//                    Toast.makeText(getContext(), "Woohoo!", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
 
-                }
+        final Button deleteButton = rootView.findViewById(R.id.deleteEventButton);
+        if (userType != null && userType.equals(Constants.USER_TYPE_ORGANIZER)) {
+            deleteButton.setOnClickListener(view -> {
+                dbHelper.eventTable.deleteEvent(eventId);
+                getFragmentManager().popBackStack();
             });
+        } else {
+            deleteButton.setVisibility(View.INVISIBLE);
         }
 
         return rootView;
