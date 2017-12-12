@@ -1,4 +1,4 @@
-package com.example.xin.meetup.main;
+package com.example.xin.meetup.event;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatImageView;

@@ -1,4 +1,4 @@
-package com.example.xin.meetup.main;
+package com.example.xin.meetup.map;
 
 import android.Manifest;
 import android.app.Dialog;

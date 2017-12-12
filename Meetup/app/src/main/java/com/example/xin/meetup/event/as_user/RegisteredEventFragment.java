@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,14 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
-import com.example.xin.meetup.main.EventPageActivity;
-import com.example.xin.meetup.main.EventPageFragment;
-import com.example.xin.meetup.main.EventRecyclerAdapter;
+import com.example.xin.meetup.event.EventPageActivity;
+import com.example.xin.meetup.event.EventRecyclerAdapter;
 import com.example.xin.meetup.util.Constants;
 import com.example.xin.meetup.util.CustomItemClickListener;
 
