@@ -125,7 +125,7 @@ public class SearchForEventsFragment extends Fragment {
                 final Fragment fragment = SearchResultListFragment.newInstance(userId, category, range);
                 final FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.search_result_frame, fragment)
+                        .replace(R.id.search_event_frame, fragment)
                         .addToBackStack(null)
                         .commit();
             }

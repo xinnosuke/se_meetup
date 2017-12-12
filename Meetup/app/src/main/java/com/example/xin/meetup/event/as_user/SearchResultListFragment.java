@@ -101,9 +101,16 @@ public class SearchResultListFragment extends Fragment {
         if (!dbHelper.eventTable.tableEmpty()) {
             listEvent.clear();
             listEvent.addAll(dbHelper.eventTable.getEventByCategoryAndDate(Event.Category.valueOf(category), range));
-            for (Event event : listEvent) {
+
+            for (int i = 0; i < listEvent.size(); ++i) {
+                final Event event = listEvent.get(i);
                 if (dbHelper.guestTable.hasRegistered(event.getId(), userId)) {
                     listEvent.remove(event);
+                    --i;
+                }
+                else if (event.getOrganizerId() == userId) {
+                    listEvent.remove(event);
+                    --i;
                 }
             }
         }

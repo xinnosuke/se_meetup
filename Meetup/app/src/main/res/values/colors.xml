@@ -19,5 +19,5 @@
     <color name="colorLightGrey">#c1bcab</color>
     <color name="colorEventPageBackground">#f4f3f0</color>
     <color name="colorVenuePageBackground">#dfbc9f</color>
-
+    <color name="colorRed">#ff3300</color>
 </resources>

@@ -41,6 +41,11 @@
     <string name="event_capacity">Capacity:</string>
     <string name="event_description">Description:</string>
     <string name="event_organizer">Organizer:</string>
+    <string name="event_Location">Location</string>
+    <string name="event_Date">Date:</string>
+    <string name="event_Time">Time:</string>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="delete">DELETE</string>

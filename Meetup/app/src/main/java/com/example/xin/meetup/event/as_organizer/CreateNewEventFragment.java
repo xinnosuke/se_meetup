@@ -50,8 +50,8 @@ public class CreateNewEventFragment extends Fragment {
     private TextInputEditText textInputEditTextDescription;
     private Button buttonDate;
     private Button buttonTime;
-    private static String buttonTextDate = "";
-    private static String buttonTextTime = "";
+    private String buttonTextDate = "";
+    private String buttonTextTime = "";
     private AppCompatButton appCompatButtonCreateEvent;
     private AppCompatTextView appCompatTextViewViewVenue;
     private AppCompatTextView appCompatTextViewCancel;
@@ -96,7 +96,7 @@ public class CreateNewEventFragment extends Fragment {
         buttonDate = rootView.findViewById(R.id.buttonDate);
         buttonTime = rootView.findViewById(R.id.buttonTime);
         buttonDate.setText(buttonTextDate);
-        buttonDate.setText(buttonTextTime);
+        buttonTime.setText(buttonTextTime);
 
         appCompatButtonCreateEvent = rootView.findViewById(R.id.appCompatButtonCreateEvent);
         appCompatTextViewViewVenue  =rootView.findViewById(R.id.appCompatTextViewVenue);
@@ -113,8 +113,8 @@ public class CreateNewEventFragment extends Fragment {
         categories.add(Event.Category.Travel.toString());
         categories.add(Event.Category.Book.toString());
 
-        final ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categories);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_style, categories);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdpwn);
         spinner.setAdapter(dataAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -237,7 +237,6 @@ public class CreateNewEventFragment extends Fragment {
         final SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         buttonTextDate = sdf.format(myCalendar.getTime());
         buttonDate.setText(buttonTextDate);
-
     }
 
     final TimePickerDialog.OnTimeSetListener time = (view, hourOfDay, minute) -> {
