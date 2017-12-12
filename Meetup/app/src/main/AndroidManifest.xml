@@ -52,6 +52,7 @@
         <activity android:name=".venue.VenueListActivity" />
         <activity android:name=".venue.VenuePageActivity" />
         <activity android:name=".event.EventPageActivity" />
+        <activity android:name=".event.as_user.SearchResultActivity" />
         <activity android:name=".map.MapActivity" />
     </application>
 

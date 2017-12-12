@@ -8,6 +8,7 @@ public class Constants {
     public final static String EVENT_ID_ARG = "EventId";
     public final static String USER_TYPE_ARG = "UserType";
     public final static String LOCATIONS_ARG = "Locations";
+    public final static String DATE_RANGE_ARG = "DateRange";
 
     public final static String USER_TYPE_GUEST = "guest";
     public final static String USER_TYPE_ORGANIZER = "organizer";

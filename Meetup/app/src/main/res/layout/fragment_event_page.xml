@@ -167,16 +167,27 @@
             </TableRow>
 
             <TableRow>
+                <TextView
+                    android:id="@+id/GuestListTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="VIEW GUEST LIST"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="80dp"
+                    android:textColor="@color/colorTextHint"
+                    android:textSize="16sp"/>
                 <Button
                     android:id="@+id/deleteEventButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Delete"
-                    android:layout_column="4"
-                    android:layout_weight="1"
-                    android:layout_marginStart="20dp"
+                    android:layout_column="2"
                     android:backgroundTint="@color/colorRed"
                     android:textColor="@android:color/white"
+                    android:textSize="14sp"
                     android:textStyle="bold"/>
             </TableRow>
         </TableLayout>

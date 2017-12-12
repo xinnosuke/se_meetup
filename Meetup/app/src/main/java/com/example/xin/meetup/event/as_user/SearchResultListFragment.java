@@ -58,7 +58,7 @@ public class SearchResultListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_event_list, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_search_result, container, false);
 
         dbHelper = DBHelper.getInstance(getContext());
         listEvent = new ArrayList<>();

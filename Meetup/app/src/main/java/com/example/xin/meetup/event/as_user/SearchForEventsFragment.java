@@ -1,9 +1,9 @@
 package com.example.xin.meetup.event.as_user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +24,7 @@ import java.util.List;
 public class SearchForEventsFragment extends Fragment {
 
     private String category = "";
-    private int range;
+    private int dateRange;
     private int userId;
 
     public static Fragment newInstance(final int userId) {
@@ -68,8 +68,8 @@ public class SearchForEventsFragment extends Fragment {
         dateRange.add("In a week");
         dateRange.add("In a month");
 
-        final ArrayAdapter<String> dataAdapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categories);
-        dataAdapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<String> dataAdapterCategory = new ArrayAdapter<>(getActivity(), R.layout.spinner_style, categories);
+        dataAdapterCategory.setDropDownViewResource(R.layout.spinner_dropdpwn);
 
         spinnerCategory.setAdapter(dataAdapterCategory);
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -84,8 +84,8 @@ public class SearchForEventsFragment extends Fragment {
             }
         });
 
-        final ArrayAdapter<String> dataAdapterWhen = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, dateRange);
-        dataAdapterWhen.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<String> dataAdapterWhen = new ArrayAdapter<>(getActivity(), R.layout.spinner_style, dateRange);
+        dataAdapterWhen.setDropDownViewResource(R.layout.spinner_dropdpwn);
 
         spinnerWhen.setAdapter(dataAdapterWhen);
         spinnerWhen.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -93,16 +93,16 @@ public class SearchForEventsFragment extends Fragment {
             public void onItemSelected(final AdapterView<?> adapterView, final View view, final int position, final long l) {
                 switch (adapterView.getItemAtPosition(position).toString()) {
                     case "Today":
-                        range = 0;
+                        SearchForEventsFragment.this.dateRange = 0;
                         break;
                     case "In a week":
-                        range = 7;
+                        SearchForEventsFragment.this.dateRange = 7;
                         break;
                     case "In a month":
-                        range = 30;
+                        SearchForEventsFragment.this.dateRange = 30;
                         break;
                     default:
-                        range = 0;
+                        SearchForEventsFragment.this.dateRange = 0;
                         break;
                 }
             }
@@ -122,12 +122,8 @@ public class SearchForEventsFragment extends Fragment {
                     return;
                 }
 
-                final Fragment fragment = SearchResultListFragment.newInstance(userId, category, range);
-                final FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.search_event_frame, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                final Intent createNewEventIntent = SearchResultActivity.createIntent(getContext(), userId, category, SearchForEventsFragment.this.dateRange);
+                startActivity(createNewEventIntent);
             }
         });
 

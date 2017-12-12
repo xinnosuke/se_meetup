@@ -80,6 +80,34 @@ public class UserTable {
         return user;
     }
 
+    public User getUser(final int userId) {
+        final String[] columns = {
+                COLUMN_USER_ID,
+                COLUMN_USER_EMAIL,
+                COLUMN_USER_NAME,
+        };
+
+        final String selection = COLUMN_USER_ID + " = ?";
+        final String[] selectionArgs = {String.valueOf(userId)};
+        final SQLiteDatabase db = helper.getReadableDatabase();
+
+        final Cursor cursor = db.query(TABLE_USER, //Table to query
+                columns,    //columns to return
+                selection,        //columns for the WHERE clause
+                selectionArgs,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                null); //The sort order
+
+        cursor.moveToFirst();
+        final User user = userFromCursor(cursor);
+
+        cursor.close();
+        db.close();
+
+        return user;
+    }
+
     public String getUserName(final int userId) {
         final String[] columns = {
                 COLUMN_USER_ID,
