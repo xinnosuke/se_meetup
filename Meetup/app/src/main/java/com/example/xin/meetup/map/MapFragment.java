@@ -4,11 +4,14 @@ import android.Manifest;
 import android.app.Dialog;
 import android.os.Bundle;
 
+import com.example.xin.meetup.util.Constants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.SupportMapFragment;
+
+import java.util.ArrayList;
 
 public class MapFragment extends SupportMapFragment {
     private static final String[] LOCATION_PERMISSIONS = new String[] {
@@ -18,12 +21,18 @@ public class MapFragment extends SupportMapFragment {
     private static final int REQUEST_LOCATION_PERMISSIONS = 0;
     private static final int REQUEST_ERROR = 0;
 
+    private ArrayList<MapLocation> locations;
     private GoogleApiClient gapiClient;
 
 //    private GoogleMap mMap;
 
-    public static MapFragment newInstance() {
-        return new MapFragment();
+    public static MapFragment newInstance(final ArrayList<MapLocation> locations) {
+        final MapFragment fragment = new MapFragment();
+        final Bundle args = new Bundle();
+        args.putParcelableArrayList(Constants.LOCATIONS_ARG, locations);
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
@@ -42,6 +51,9 @@ public class MapFragment extends SupportMapFragment {
     @Override
     public void onCreate(final Bundle bundle) {
         super.onCreate(bundle);
+
+        final Bundle args = getArguments();
+        locations = args.getParcelableArrayList(Constants.LOCATIONS_ARG);
 
         gapiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)
