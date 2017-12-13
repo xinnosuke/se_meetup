@@ -78,7 +78,6 @@ public class GuestTable {
     public List<Integer> getMyEvents(final int guestId) {
         final String[] columns = {
                 COLUMN_EVENT_ID,
-                COLUMN_GUEST_ID,
         };
 
         final List<Integer> eventList = new ArrayList<>();
@@ -96,7 +95,7 @@ public class GuestTable {
 
         if (cursor.moveToFirst()) {
             do {
-                eventList.add(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_GUEST_ID))));
+                eventList.add(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_ID))));
             } while (cursor.moveToNext());
         }
         cursor.close();
