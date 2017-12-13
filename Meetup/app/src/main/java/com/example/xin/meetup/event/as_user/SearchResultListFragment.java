@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.xin.meetup.R;
@@ -24,7 +23,6 @@ import com.example.xin.meetup.util.Constants;
 import com.example.xin.meetup.util.CustomItemClickListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchResultListFragment extends Fragment {
 
@@ -101,7 +99,7 @@ public class SearchResultListFragment extends Fragment {
         final FloatingActionButton fab = rootView.findViewById(R.id.createEventButton);
         fab.setVisibility(View.GONE);
 
-        final Button viewMapButton = rootView.findViewById(R.id.mapViewButton);
+        final FloatingActionButton viewMapButton = rootView.findViewById(R.id.mapViewButton);
         viewMapButton.setOnClickListener(v -> {
             final Intent mapIntent = MapActivity.createIntent(getContext(), userId, userType, listEvent);
             startActivity(mapIntent);
