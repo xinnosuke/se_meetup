@@ -108,10 +108,6 @@ public class EventPageFragment extends Fragment {
                 break;
         }
 
-        if (userType != null && userType.equals(Constants.USER_TYPE_GUEST)) {
-
-        }
-
         final Button deleteButton = rootView.findViewById(R.id.deleteEventButton);
         final TextView viewGuestListTextView = rootView.findViewById(R.id.guestListTextView);
         final Button rsvpButton = rootView.findViewById(R.id.rsvpButton);
@@ -131,20 +127,29 @@ public class EventPageFragment extends Fragment {
             });
 
             rsvpButton.setVisibility(View.INVISIBLE);
-
         } else {
             deleteButton.setVisibility(View.INVISIBLE);
             viewGuestListTextView.setVisibility(View.INVISIBLE);
+
+            if (dbHelper.guestTable.hasRegistered(userId, eventId)) {
+                rsvpButton.setText("Withdraw");
+            } else {
+                rsvpButton.setText("Join");
+            }
 
             rsvpButton.setVisibility(View.VISIBLE);
             rsvpButton.bringToFront();
             rsvpButton.setOnClickListener(view -> {
                 if (dbHelper.guestTable.hasRegistered(userId, eventId)) {
-                    Toast.makeText(getContext(), "Already registered for this event.", Toast.LENGTH_SHORT).show();
+                    dbHelper.guestTable.deleteGuestFromEvent(userId, eventId);
+                    rsvpButton.setText("Join");
+                    Toast.makeText(getContext(), "Withdrawn from the event.", Toast.LENGTH_SHORT).show();
                 } else {
                     dbHelper.guestTable.addGuest(eventId, userId);
+                    rsvpButton.setText("Withdraw");
                     Toast.makeText(getContext(), "Woohoo!", Toast.LENGTH_SHORT).show();
                 }
+                getActivity().setResult(RESULT_OK);
             });
         }
 

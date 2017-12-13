@@ -110,6 +110,15 @@ public class GuestTable {
         db.close();
     }
 
+    public void deleteGuestFromEvent(final int guestId, final int eventId) {
+        final String selection = COLUMN_EVENT_ID + " = ? AND " + COLUMN_GUEST_ID + " = ?";
+        final String[] selectionArgs = {String.valueOf(eventId), String.valueOf(guestId)};
+
+        final SQLiteDatabase db = helper.getWritableDatabase();
+        db.delete(TABLE_GUEST, selection, selectionArgs);
+        db.close();
+    }
+
     public void deleteEvent(final int eventID) {
         final SQLiteDatabase db = helper.getWritableDatabase();
         db.delete(TABLE_GUEST, COLUMN_EVENT_ID + " = ?", new String[]{String.valueOf(eventID)});
