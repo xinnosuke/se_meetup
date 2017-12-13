@@ -23,11 +23,17 @@ import com.example.xin.meetup.util.CustomItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class RegisteredEventFragment extends Fragment {
+    private final static int REQUEST_VIEW_EVENT = 0;
 
     private int userId;
     private List<Event> listEvent;
     private DBHelper dbHelper;
+    private EventRecyclerAdapter eventRecyclerAdapter;
+    private RecyclerView recyclerViewEvent;
+    private TextView noEventTextView;
 
     public static Fragment newInstance(final int userId) {
         final Fragment fragment = new RegisteredEventFragment();
@@ -53,17 +59,17 @@ public class RegisteredEventFragment extends Fragment {
         dbHelper = DBHelper.getInstance(getContext());
         listEvent = new ArrayList<>();
 
-        getDataFromSQLite();
+        getDataFromDB();
 
-        final TextView noEventTextView = rootView.findViewById(R.id.empty_view_registered);
+        noEventTextView = rootView.findViewById(R.id.empty_view_registered);
 
         final CustomItemClickListener listener = (view, position, eventId) -> {
             final Intent eventPageIntent = EventPageActivity.createIntent(getContext(), eventId, userId, null);
-            startActivity(eventPageIntent);
+            startActivityForResult(eventPageIntent, REQUEST_VIEW_EVENT);
         };
 
-        final EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(listEvent, dbHelper, getFragmentManager(), listener);
-        final RecyclerView recyclerViewEvent = rootView.findViewById(R.id.recycler_view_registered_event);
+        eventRecyclerAdapter = new EventRecyclerAdapter(listEvent, dbHelper, getFragmentManager(), listener);
+        recyclerViewEvent = rootView.findViewById(R.id.recycler_view_registered_event);
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerViewEvent.setLayoutManager(mLayoutManager);
         recyclerViewEvent.setItemAnimator(new DefaultItemAnimator());
@@ -82,7 +88,34 @@ public class RegisteredEventFragment extends Fragment {
         return rootView;
     }
 
-    private void getDataFromSQLite() {
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        switch (requestCode) {
+            case REQUEST_VIEW_EVENT:
+                if (resultCode == RESULT_OK) {
+                    getDataFromDB();
+                    updateVisibility();
+                    eventRecyclerAdapter.notifyDataSetChanged();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
+    }
+
+    private void updateVisibility() {
+        if (listEvent.isEmpty()) {
+            recyclerViewEvent.setVisibility(View.INVISIBLE);
+            noEventTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            recyclerViewEvent.setVisibility(View.VISIBLE);
+            noEventTextView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void getDataFromDB() {
         if (!dbHelper.guestTable.tableEmpty()) {
             listEvent.clear();
             ArrayList<Integer> listEventId = new ArrayList<>();
