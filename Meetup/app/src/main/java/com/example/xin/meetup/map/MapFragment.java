@@ -120,7 +120,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         googleMap.setOnMarkerClickListener(this);
 
         final LatLng nyit = new LatLng(40.769879, -73.982533);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(nyit, 16));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(nyit, 13));
 
         for (int i = 0; i < addresses.length; ++i) {
             final Address address = addresses[i];

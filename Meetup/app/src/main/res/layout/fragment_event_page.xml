@@ -198,21 +198,19 @@
             </TableRow>
 
             <TableRow
-                android:paddingTop="10dp">
+                android:paddingTop="15dp">
                 <Button
                     android:id="@+id/rsvpButton"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_join"
-                    android:layout_column="2"
                     android:layout_weight="1"
-                    android:layout_marginStart="10dp"
+                    android:layout_span="2"
                     android:backgroundTint="@color/colorBottomBar"
                     android:textColor="@android:color/white"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
             </TableRow>
-
         </TableLayout>
 
         <!--<com.google.android.gms.maps.MapView-->
