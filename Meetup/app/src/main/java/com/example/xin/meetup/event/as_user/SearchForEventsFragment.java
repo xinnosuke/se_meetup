@@ -55,12 +55,9 @@ public class SearchForEventsFragment extends Fragment {
 
         final ArrayList<String> categoryList = new ArrayList<>();
         categoryList.add(Constants.CATEGORY_DEFAULT_STR);
-        categoryList.add(Event.Category.Art.toString());
-        categoryList.add(Event.Category.Outdoor.toString());
-        categoryList.add(Event.Category.Food.toString());
-        categoryList.add(Event.Category.Movie.toString());
-        categoryList.add(Event.Category.Travel.toString());
-        categoryList.add(Event.Category.Book.toString());
+        for (final Event.Category category : Event.Category.values()) {
+            categoryList.add(category.toString());
+        }
 
         final ArrayList<String> dateRangeList = new ArrayList<>();
         dateRangeList.add("When");

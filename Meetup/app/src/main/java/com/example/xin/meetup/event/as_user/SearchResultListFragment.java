@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.xin.meetup.R;
@@ -18,6 +19,7 @@ import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.event.EventPageActivity;
 import com.example.xin.meetup.event.EventRecyclerAdapter;
+import com.example.xin.meetup.map.MapActivity;
 import com.example.xin.meetup.util.Constants;
 import com.example.xin.meetup.util.CustomItemClickListener;
 
@@ -91,6 +93,12 @@ public class SearchResultListFragment extends Fragment {
         final FloatingActionButton fab = rootView.findViewById(R.id.createEventButton);
         fab.setVisibility(View.GONE);
 
+        final Button viewMapButton = rootView.findViewById(R.id.mapViewButton);
+        viewMapButton.setOnClickListener(v -> {
+//            final Intent mapIntent = MapActivity.createIntent(getContext(), );
+//            startActivity(mapIntent);
+        });
+
         return rootView;
     }
 
@@ -101,11 +109,11 @@ public class SearchResultListFragment extends Fragment {
 
             for (int i = 0; i < listEvent.size(); ++i) {
                 final Event event = listEvent.get(i);
-                if (dbHelper.guestTable.hasRegistered(event.getId(), userId)) {
+                if (dbHelper.guestTable.hasRegistered(event.id, userId)) {
                     listEvent.remove(event);
                     --i;
                 }
-                else if (event.getOrganizerId() == userId) {
+                else if (event.organizerId == userId) {
                     listEvent.remove(event);
                     --i;
                 }

@@ -57,7 +57,6 @@ public class CreateNewEventFragment extends Fragment {
     private AppCompatTextView appCompatTextViewCancel;
     private InputValidation inputValidation;
     private DBHelper databaseHelper;
-    private Event event;
     private String category = "";
     private int userId;
     private final Calendar myCalendar = Calendar.getInstance();
@@ -106,12 +105,9 @@ public class CreateNewEventFragment extends Fragment {
 
         final List<String> categories = new ArrayList<>();
         categories.add(CATEGORY_SELECT_STR);
-        categories.add(Event.Category.Art.toString());
-        categories.add(Event.Category.Outdoor.toString());
-        categories.add(Event.Category.Food.toString());
-        categories.add(Event.Category.Movie.toString());
-        categories.add(Event.Category.Travel.toString());
-        categories.add(Event.Category.Book.toString());
+        for (final Event.Category category : Event.Category.values()) {
+            categories.add(category.toString());
+        }
 
         final ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_style, categories);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdpwn);
@@ -166,7 +162,6 @@ public class CreateNewEventFragment extends Fragment {
     private void initObjects() {
         inputValidation = new InputValidation(getActivity());
         databaseHelper = DBHelper.getInstance(getActivity());
-        event = new Event();
     }
 
     public boolean createNewEvent() {
@@ -186,14 +181,17 @@ public class CreateNewEventFragment extends Fragment {
         final String time = buttonTextTime;
         final String description = textInputEditTextDescription.getText().toString().trim();
 
-        event.setName(eventName);
-        event.setLocation(location);
-        event.setOrganizerId(userId);
-        event.setCategory(Event.Category.valueOf(category));
-        event.setCapacity(capacity);
-        event.setDate(date.trim());
-        event.setTime(time.trim());
-        event.setDescription(description);
+        final Event event = new Event(
+                -1,
+                eventName,
+                location,
+                date.trim(),
+                time.trim(),
+                capacity,
+                Event.Category.valueOf(category),
+                userId,
+                description,
+                0);
 
         databaseHelper.eventTable.addEvent(event);
 

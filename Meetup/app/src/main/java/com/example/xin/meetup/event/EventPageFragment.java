@@ -62,10 +62,10 @@ public class EventPageFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final DBHelper dbHelper = DBHelper.getInstance(getContext());
         final Event event = dbHelper.eventTable.getEventById(eventId);
-        final int organizerId = event.getOrganizerId();
+        final int organizerId = event.organizerId;
         final String organizerName = dbHelper.userTable.getUserName(organizerId);
-        final String dateTime = event.getDate() + " " + event.getTime();
-        final String eventName = event.getName();
+        final String dateTime = event.date + " " + event.time;
+        final String eventName = event.name;
 
         final View rootView = inflater.inflate(R.layout.fragment_event_page, container, false);
         final ImageView imageView = rootView.findViewById(R.id.event_image);
@@ -78,12 +78,12 @@ public class EventPageFragment extends Fragment {
         final TextView descriptionTextView = rootView.findViewById(R.id.event_description_textView);
 
         eventNameTextView.setText(eventName);
-        locationTextView.setText(event.getLocation());
+        locationTextView.setText(event.location);
         dataTimeTextView.setText(dateTime);
-        categoryTextView.setText(event.getCategory());
-        capacityTextView.setText(String.valueOf(event.getCapacity()));
+        categoryTextView.setText(event.category.toString());
+        capacityTextView.setText(String.valueOf(event.capacity));
         organizerTextView.setText(organizerName);
-        descriptionTextView.setText(event.getDescription());
+        descriptionTextView.setText(event.description);
 
         if (userType != null && userType.equals(Constants.USER_TYPE_GUEST)) {
 

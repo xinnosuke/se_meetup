@@ -41,9 +41,9 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     @Override
     public void onBindViewHolder(final EventRecyclerAdapter.EventViewHolder holder, final int position) {
         holder.event = listEvent.get(position);
-        holder.textViewEventName.setText(listEvent.get(position).getName());
-        holder.textViewDate.setText(listEvent.get(position).getDate());
-        holder.textViewLocation.setText(listEvent.get(position).getLocation());
+        holder.textViewEventName.setText(listEvent.get(position).name);
+        holder.textViewDate.setText(listEvent.get(position).date);
+        holder.textViewLocation.setText(listEvent.get(position).location);
     }
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
@@ -64,7 +64,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    listener.onItemClick(view, getAdapterPosition(), event.getId());
+                    listener.onItemClick(view, getAdapterPosition(), event.id);
                     final int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
                         EventRecyclerAdapter.this.notifyDataSetChanged();
