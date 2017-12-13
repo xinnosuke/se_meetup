@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +17,6 @@ import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.event.as_organizer.GuestListActivity;
-import com.example.xin.meetup.event.as_organizer.GuestListFragment;
-import com.example.xin.meetup.event.as_user.SearchForEventsFragment;
-import com.example.xin.meetup.event.as_user.SearchResultActivity;
 import com.example.xin.meetup.util.Constants;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -87,6 +83,7 @@ public class EventPageFragment extends Fragment {
 
         switch (event.category) {
             case Art:
+                imageView.setImageResource(R.drawable.yoga);
                 break;
             case Book:
                 imageView.setImageResource(R.drawable.books);
@@ -142,8 +139,12 @@ public class EventPageFragment extends Fragment {
             rsvpButton.setVisibility(View.VISIBLE);
             rsvpButton.bringToFront();
             rsvpButton.setOnClickListener(view -> {
-                dbHelper.guestTable.addGuest(eventId, userId);
-                Toast.makeText(getContext(), "Woohoo!", Toast.LENGTH_SHORT).show();
+                if (dbHelper.guestTable.hasRegistered(userId, eventId)) {
+                    Toast.makeText(getContext(), "Already registered for this event.", Toast.LENGTH_SHORT).show();
+                } else {
+                    dbHelper.guestTable.addGuest(eventId, userId);
+                    Toast.makeText(getContext(), "Woohoo!", Toast.LENGTH_SHORT).show();
+                }
             });
         }
 
