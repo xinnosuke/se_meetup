@@ -2,11 +2,13 @@ package com.example.xin.meetup.map;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
 import com.example.xin.meetup.database.Event;
+import com.example.xin.meetup.event.EventPageActivity;
 import com.example.xin.meetup.util.Constants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -16,13 +18,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
+public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final String[] LOCATION_PERMISSIONS = new String[] {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -35,8 +38,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     private ArrayList<Event> events;
     private Address[] addresses;
     private GoogleApiClient gapiClient;
-
-//    private GoogleMap mMap;
 
     public static MapFragment newInstance(
             final int userId,
@@ -62,6 +63,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         if (errorCode != ConnectionResult.SUCCESS) {
             final Dialog errorDialog = gapiAvailability.getErrorDialog(getActivity(), errorCode, REQUEST_ERROR);
             errorDialog.show();
+            getActivity().finish();
         }
     }
 
@@ -114,6 +116,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
+        googleMap.setOnMarkerClickListener(this);
+
         final LatLng nyit = new LatLng(40.769879, -73.982533);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(nyit, 16));
 
@@ -129,37 +133,24 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                     .position(ll)
                     .title(event.name);
 
-            googleMap.addMarker(mo);
+            final Marker marker = googleMap.addMarker(mo);
+            marker.setTag(event);
         }
     }
 
-    //    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_maps);
-//        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-//    }
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        final Object tag = marker.getTag();
+        if (tag == null || !(tag instanceof Event)) {
+            return false;
+        }
 
+        final Event event = (Event)tag;
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-//    @Override
-//    public void onMapReady(final GoogleMap googleMap) {
-//        mMap = googleMap;
-//
-//        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//    }
+        final Intent eventPageIntent = EventPageActivity.createIntent(
+                getContext(), event.id, userId, userType);
+        startActivity(eventPageIntent);
+
+        return true;
+    }
 }
