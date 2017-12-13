@@ -11,12 +11,20 @@ import com.example.xin.meetup.util.SingleFragmentActivity;
 public class SearchResultActivity extends SingleFragmentActivity {
 
     private int userId;
+    private String userType;
     private String category;
     private int dateRange;
 
-    public static Intent createIntent(final Context context, final int userId, final String category, final int dateRange) {
+    public static Intent createIntent(
+            final Context context,
+            final int userId,
+            final String userType,
+            final String category,
+            final int dateRange)
+    {
         final Intent intent = new Intent(context, SearchResultActivity.class);
         intent.putExtra(Constants.USER_ID_ARG, userId);
+        intent.putExtra(Constants.USER_TYPE_ARG, userType);
         intent.putExtra(Constants.CATEGORY_DEFAULT_STR, category);
         intent.putExtra(Constants.DATE_RANGE_ARG, dateRange);
         return intent;
@@ -25,12 +33,13 @@ public class SearchResultActivity extends SingleFragmentActivity {
     @Override
     protected void processIntentArgs(final Bundle intentArgs) {
         userId = intentArgs.getInt(Constants.USER_ID_ARG);
+        userType = intentArgs.getString(Constants.USER_TYPE_ARG);
         category = intentArgs.getString(Constants.CATEGORY_DEFAULT_STR);
         dateRange = intentArgs.getInt(Constants.DATE_RANGE_ARG);
     }
 
     @Override
     protected Fragment createFragment() {
-        return SearchResultListFragment.newInstance(userId, category, dateRange);
+        return SearchResultListFragment.newInstance(userId, userType, category, dateRange);
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.util.Constants;
 import com.example.xin.meetup.util.SingleFragmentActivity;
 
@@ -13,9 +14,14 @@ import java.util.ArrayList;
 public class MapActivity extends SingleFragmentActivity {
     private ArrayList<MapLocation> locations;
 
-    public static Intent createIntent(final Context context, final ArrayList<MapLocation> locations) {
+    public static Intent createIntent(
+            final Context context,
+            final int userId,
+            final String userType,
+            final ArrayList<Event> locations)
+    {
         final Intent intent = new Intent(context, MapActivity.class);
-        intent.putParcelableArrayListExtra(Constants.LOCATIONS_ARG, locations);
+        // intent.putParcelableArrayListExtra(Constants.LOCATIONS_ARG, locations);
         return intent;
     }
 

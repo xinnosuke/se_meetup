@@ -30,16 +30,23 @@ public class SearchResultListFragment extends Fragment {
 
     private final static String CATEGORY_ARG = "Category";
 
-    private List<Event> listEvent;
+    private ArrayList<Event> listEvent;
     private DBHelper dbHelper;
     private int userId;
+    private String userType;
     private String category;
     private int dateRange;
 
-    public static Fragment newInstance(final int userId, final String category, final int range) {
+    public static Fragment newInstance(
+            final int userId,
+            final String userType,
+            final String category,
+            final int range)
+    {
         final Fragment fragment = new SearchResultListFragment();
         final Bundle args = new Bundle();
         args.putInt(Constants.USER_ID_ARG, userId);
+        args.putString(Constants.USER_TYPE_ARG, userType);
         args.putString(CATEGORY_ARG, category);
         args.putInt(Constants.DATE_RANGE_ARG, range);
         fragment.setArguments(args);
@@ -52,6 +59,7 @@ public class SearchResultListFragment extends Fragment {
 
         final Bundle bundle = getArguments();
         userId = bundle.getInt(Constants.USER_ID_ARG);
+        userType = bundle.getString(Constants.USER_TYPE_ARG);
         category = bundle.getString(CATEGORY_ARG);
         dateRange = bundle.getInt(Constants.DATE_RANGE_ARG);
     }
@@ -95,8 +103,8 @@ public class SearchResultListFragment extends Fragment {
 
         final Button viewMapButton = rootView.findViewById(R.id.mapViewButton);
         viewMapButton.setOnClickListener(v -> {
-//            final Intent mapIntent = MapActivity.createIntent(getContext(), );
-//            startActivity(mapIntent);
+            final Intent mapIntent = MapActivity.createIntent(getContext(), userId, userType, listEvent);
+            startActivity(mapIntent);
         });
 
         return rootView;

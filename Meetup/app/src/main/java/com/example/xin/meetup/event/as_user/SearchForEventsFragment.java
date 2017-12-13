@@ -19,7 +19,6 @@ import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.util.Constants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchForEventsFragment extends Fragment {
 
@@ -119,7 +118,8 @@ public class SearchForEventsFragment extends Fragment {
                     return;
                 }
 
-                final Intent createNewEventIntent = SearchResultActivity.createIntent(getContext(), userId, category, dateRange);
+                final Intent createNewEventIntent = SearchResultActivity.createIntent(
+                        getContext(), userId, Constants.USER_TYPE_GUEST, category, dateRange);
                 startActivity(createNewEventIntent);
             }
         });
