@@ -34,7 +34,7 @@
     <string name="your_event">Your Event</string>
     <string name="home">Home</string>
     <string name="search_for_event">Search for event</string>
-    <string name="event_picture">event picture</string>
+    <string name="event_image">event image</string>
     <string name="event_where">Where:</string>
     <string name="event_when">When:</string>
     <string name="event_category">Category:</string>
@@ -44,8 +44,8 @@
     <string name="event_Location">Location</string>
     <string name="event_Date">Date:</string>
     <string name="event_Time">Time:</string>
-
-
+    <string name="guest_image">guest image</string>
+    <string name="venue_image">venue image</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="delete">DELETE</string>

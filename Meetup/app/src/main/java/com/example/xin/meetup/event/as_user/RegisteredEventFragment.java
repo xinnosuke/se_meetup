@@ -84,9 +84,9 @@ public class RegisteredEventFragment extends Fragment {
 
     private void getDataFromSQLite() {
         if (!dbHelper.guestTable.tableEmpty()) {
-            List<Integer> listEventId = new ArrayList<>();
-            listEventId.addAll(dbHelper.guestTable.getMyEvents(userId));
             listEvent.clear();
+            ArrayList<Integer> listEventId = new ArrayList<>();
+            listEventId.addAll(dbHelper.guestTable.getMyEvents(userId));
 
             if (!listEventId.isEmpty()) {
                 for (Integer eventId : listEventId) {

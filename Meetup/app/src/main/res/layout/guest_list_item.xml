@@ -16,15 +16,15 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginEnd="@dimen/activity_padding_horizontal"
-            android:contentDescription="@string/event_picture"
+            android:contentDescription="@string/guest_image"
             android:scaleType="centerCrop"
-            android:background="@color/colorYellow"/>
+            android:background="@color/colorAccent"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/guest_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/thumbnail"
+            android:layout_toEndOf="@id/thumbnail_guest"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:maxLines="1"

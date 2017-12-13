@@ -23,7 +23,7 @@ import java.util.List;
 
 public class SearchForEventsFragment extends Fragment {
 
-    private String category = "";
+    private String category;
     private int dateRange;
     private int userId;
 
@@ -53,22 +53,22 @@ public class SearchForEventsFragment extends Fragment {
         final Spinner spinnerCategory = rootView.findViewById(R.id.spinner_category);
         final Spinner spinnerWhen = rootView.findViewById(R.id.spinner_when);
 
-        final List<String> categories = new ArrayList<>();
-        categories.add(Constants.CATEGORY_DEFAULT_STR);
-        categories.add(Event.Category.Art.toString());
-        categories.add(Event.Category.Outdoor.toString());
-        categories.add(Event.Category.Food.toString());
-        categories.add(Event.Category.Movie.toString());
-        categories.add(Event.Category.Travel.toString());
-        categories.add(Event.Category.Book.toString());
+        final ArrayList<String> categoryList = new ArrayList<>();
+        categoryList.add(Constants.CATEGORY_DEFAULT_STR);
+        categoryList.add(Event.Category.Art.toString());
+        categoryList.add(Event.Category.Outdoor.toString());
+        categoryList.add(Event.Category.Food.toString());
+        categoryList.add(Event.Category.Movie.toString());
+        categoryList.add(Event.Category.Travel.toString());
+        categoryList.add(Event.Category.Book.toString());
 
-        final List<String> dateRange = new ArrayList<>();
-        dateRange.add("When");
-        dateRange.add("Today");
-        dateRange.add("In a week");
-        dateRange.add("In a month");
+        final ArrayList<String> dateRangeList = new ArrayList<>();
+        dateRangeList.add("When");
+        dateRangeList.add("Today");
+        dateRangeList.add("In a week");
+        dateRangeList.add("In a month");
 
-        final ArrayAdapter<String> dataAdapterCategory = new ArrayAdapter<>(getActivity(), R.layout.spinner_style, categories);
+        final ArrayAdapter<String> dataAdapterCategory = new ArrayAdapter<>(getActivity(), R.layout.spinner_style, categoryList);
         dataAdapterCategory.setDropDownViewResource(R.layout.spinner_dropdpwn);
 
         spinnerCategory.setAdapter(dataAdapterCategory);
@@ -84,7 +84,7 @@ public class SearchForEventsFragment extends Fragment {
             }
         });
 
-        final ArrayAdapter<String> dataAdapterWhen = new ArrayAdapter<>(getActivity(), R.layout.spinner_style, dateRange);
+        final ArrayAdapter<String> dataAdapterWhen = new ArrayAdapter<>(getActivity(), R.layout.spinner_style, dateRangeList);
         dataAdapterWhen.setDropDownViewResource(R.layout.spinner_dropdpwn);
 
         spinnerWhen.setAdapter(dataAdapterWhen);
@@ -122,7 +122,7 @@ public class SearchForEventsFragment extends Fragment {
                     return;
                 }
 
-                final Intent createNewEventIntent = SearchResultActivity.createIntent(getContext(), userId, category, SearchForEventsFragment.this.dateRange);
+                final Intent createNewEventIntent = SearchResultActivity.createIntent(getContext(), userId, category, dateRange);
                 startActivity(createNewEventIntent);
             }
         });

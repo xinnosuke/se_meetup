@@ -1,8 +1,10 @@
 package com.example.xin.meetup.event;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xin.meetup.R;
 import com.example.xin.meetup.database.DBHelper;
 import com.example.xin.meetup.database.Event;
+import com.example.xin.meetup.event.as_organizer.GuestListActivity;
+import com.example.xin.meetup.event.as_organizer.GuestListFragment;
+import com.example.xin.meetup.event.as_user.SearchForEventsFragment;
+import com.example.xin.meetup.event.as_user.SearchResultActivity;
 import com.example.xin.meetup.util.Constants;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -78,56 +85,42 @@ public class EventPageFragment extends Fragment {
         organizerTextView.setText(organizerName);
         descriptionTextView.setText(event.getDescription());
 
-//        if (userType != null && userType.equals(Constants.USER_TYPE_GUEST)) {
-//            final FloatingActionButton fb = rootView.findViewById(R.id.fab_rsvp);
-//            fb.setVisibility(View.VISIBLE);
-//            fb.bringToFront();
-//            fb.setOnClickListener(view -> {
-//                dbHelper.guestTable.addGuest(eventId, userId);
-//                Toast.makeText(getContext(), "Woohoo!", Toast.LENGTH_SHORT).show();
-//            });
-//        }
+        if (userType != null && userType.equals(Constants.USER_TYPE_GUEST)) {
+
+        }
 
         final Button deleteButton = rootView.findViewById(R.id.deleteEventButton);
+        final TextView viewGuestListTextView = rootView.findViewById(R.id.guestListTextView);
+        final Button rsvpButton = rootView.findViewById(R.id.rsvpButton);
+
         if (userType != null && userType.equals(Constants.USER_TYPE_ORGANIZER)) {
             deleteButton.setOnClickListener(view -> {
-                dbHelper.eventTable.deleteEvent(eventId);
+                dbHelper.deleteEvent(eventId);
 
                 final Activity activity = getActivity();
                 activity.setResult(RESULT_OK);
                 activity.finish();
             });
+
+            viewGuestListTextView.setOnClickListener(view -> {
+                final Intent viewGuestListIntent = GuestListActivity.createIntent(getContext(), eventId);
+                startActivity(viewGuestListIntent);
+            });
+
+            rsvpButton.setVisibility(View.INVISIBLE);
+
         } else {
             deleteButton.setVisibility(View.INVISIBLE);
+            viewGuestListTextView.setVisibility(View.INVISIBLE);
+
+            rsvpButton.setVisibility(View.VISIBLE);
+            rsvpButton.bringToFront();
+            rsvpButton.setOnClickListener(view -> {
+                dbHelper.guestTable.addGuest(eventId, userId);
+                Toast.makeText(getContext(), "Woohoo!", Toast.LENGTH_SHORT).show();
+            });
         }
 
         return rootView;
     }
-
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    public interface OnFragmentInteractionListener {
-//        void onFragmentInteraction(Uri uri);
-//    }
 }

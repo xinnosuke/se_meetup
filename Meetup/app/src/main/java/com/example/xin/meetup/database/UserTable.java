@@ -85,6 +85,7 @@ public class UserTable {
                 COLUMN_USER_ID,
                 COLUMN_USER_EMAIL,
                 COLUMN_USER_NAME,
+                COLUMN_USER_PASSWORD
         };
 
         final String selection = COLUMN_USER_ID + " = ?";
@@ -92,12 +93,12 @@ public class UserTable {
         final SQLiteDatabase db = helper.getReadableDatabase();
 
         final Cursor cursor = db.query(TABLE_USER, //Table to query
-                columns,    //columns to return
-                selection,        //columns for the WHERE clause
-                selectionArgs,        //The values for the WHERE clause
-                null,       //group the rows
-                null,       //filter by row groups
-                null); //The sort order
+                columns,                           //columns to return
+                selection,                         //columns for the WHERE clause
+                selectionArgs,                     //The values for the WHERE clause
+                null,                     //group the rows
+                null,                      //filter by row groups
+                null);                    //The sort order
 
         cursor.moveToFirst();
         final User user = userFromCursor(cursor);

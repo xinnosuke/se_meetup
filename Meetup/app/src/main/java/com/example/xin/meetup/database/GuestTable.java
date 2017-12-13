@@ -107,7 +107,13 @@ public class GuestTable {
 
     public void deleteGuest(final int guestId) {
         final SQLiteDatabase db = helper.getWritableDatabase();
-        db.delete(TABLE_GUEST, COLUMN_EVENT_ID + " = ?", new String[]{String.valueOf(guestId)});
+        db.delete(TABLE_GUEST, COLUMN_GUEST_ID + " = ?", new String[]{String.valueOf(guestId)});
+        db.close();
+    }
+
+    public void deleteEvent(final int eventID) {
+        final SQLiteDatabase db = helper.getWritableDatabase();
+        db.delete(TABLE_GUEST, COLUMN_EVENT_ID + " = ?", new String[]{String.valueOf(eventID)});
         db.close();
     }
 

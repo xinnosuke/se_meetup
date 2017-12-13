@@ -89,7 +89,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         final int userId = databaseHelper.userTable.getUser(email).getId();
-
         final Intent mainIntent = MainActivity.createIntent(activity, userId);
         startActivity(mainIntent);
         finish();

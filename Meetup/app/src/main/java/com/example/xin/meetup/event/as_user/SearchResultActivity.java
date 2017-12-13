@@ -27,7 +27,6 @@ public class SearchResultActivity extends SingleFragmentActivity {
         userId = intentArgs.getInt(Constants.USER_ID_ARG);
         category = intentArgs.getString(Constants.CATEGORY_DEFAULT_STR);
         dateRange = intentArgs.getInt(Constants.DATE_RANGE_ARG);
-
     }
 
     @Override

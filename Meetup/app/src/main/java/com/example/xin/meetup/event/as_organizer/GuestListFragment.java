@@ -17,20 +17,18 @@ import com.example.xin.meetup.database.User;
 import com.example.xin.meetup.util.Constants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GuestListFragment extends Fragment {
 
     private int eventId;
-    private final List<User> guestList = new ArrayList<>();
-    private final List<Integer> guestIdList = new ArrayList<>();
+    private final ArrayList<User> guestList = new ArrayList<>();
+    private final ArrayList<Integer> guestIdList = new ArrayList<>();
     private DBHelper dbHelper;
-    private com.example.xin.meetup.event.as_organizer.GuestRecyclerAdapter guestRecyclerAdapter;
     private RecyclerView recyclerViewEvent;
     private TextView noGuestTextView;
 
     public static Fragment newInstance(final int eventId) {
-        final Fragment fragment = new YourEventListFragment();
+        final Fragment fragment = new GuestListFragment();
         final Bundle args = new Bundle();
         args.putInt(Constants.EVENT_ID_ARG, eventId);
         fragment.setArguments(args);
@@ -43,8 +41,8 @@ public class GuestListFragment extends Fragment {
 
         final Bundle bundle = getArguments();
         eventId = bundle.getInt(Constants.EVENT_ID_ARG);
-
         dbHelper = DBHelper.getInstance(getContext());
+
         getDataFromDB();
     }
 
@@ -58,10 +56,11 @@ public class GuestListFragment extends Fragment {
 
         noGuestTextView = rootView.findViewById(R.id.empty_view_guest);
 
-
+        final GuestRecyclerAdapter guestRecyclerAdapter;
         guestRecyclerAdapter = new GuestRecyclerAdapter(guestList, dbHelper, getFragmentManager());
-        recyclerViewEvent = rootView.findViewById(R.id.recycler_view_event);
+
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerViewEvent = rootView.findViewById(R.id.recycler_view_guest);
         recyclerViewEvent.setLayoutManager(mLayoutManager);
         recyclerViewEvent.setItemAnimator(new DefaultItemAnimator());
         recyclerViewEvent.setHasFixedSize(true);

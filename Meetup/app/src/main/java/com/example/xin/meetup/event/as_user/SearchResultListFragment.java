@@ -27,20 +27,19 @@ import java.util.List;
 public class SearchResultListFragment extends Fragment {
 
     private final static String CATEGORY_ARG = "Category";
-    private final static String RANGE_ARG = "Range";
 
     private List<Event> listEvent;
     private DBHelper dbHelper;
     private int userId;
     private String category;
-    private int range;
+    private int dateRange;
 
     public static Fragment newInstance(final int userId, final String category, final int range) {
         final Fragment fragment = new SearchResultListFragment();
         final Bundle args = new Bundle();
         args.putInt(Constants.USER_ID_ARG, userId);
         args.putString(CATEGORY_ARG, category);
-        args.putInt(RANGE_ARG, range);
+        args.putInt(Constants.DATE_RANGE_ARG, range);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,7 +51,7 @@ public class SearchResultListFragment extends Fragment {
         final Bundle bundle = getArguments();
         userId = bundle.getInt(Constants.USER_ID_ARG);
         category = bundle.getString(CATEGORY_ARG);
-        range = bundle.getInt(RANGE_ARG);
+        dateRange = bundle.getInt(Constants.DATE_RANGE_ARG);
     }
 
     @Nullable
@@ -98,7 +97,7 @@ public class SearchResultListFragment extends Fragment {
     private void getDataFromSQLite() {
         if (!dbHelper.eventTable.tableEmpty()) {
             listEvent.clear();
-            listEvent.addAll(dbHelper.eventTable.getEventByCategoryAndDate(Event.Category.valueOf(category), range));
+            listEvent.addAll(dbHelper.eventTable.getEventByCategoryAndDate(Event.Category.valueOf(category), dateRange));
 
             for (int i = 0; i < listEvent.size(); ++i) {
                 final Event event = listEvent.get(i);

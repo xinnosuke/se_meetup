@@ -46,4 +46,9 @@ public class DBHelper extends SQLiteOpenHelper {
         guestTable.onUpgrade(db, oldVersion, newVersion);
         venueTable.onUpgrade(db, oldVersion, newVersion);
     }
+
+    public void deleteEvent(final int eventId) {
+        eventTable.deleteEvent(eventId);
+        guestTable.deleteEvent(eventId);
+    }
 }
