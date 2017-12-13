@@ -119,8 +119,8 @@ public class GuestTable {
     public boolean hasRegistered(final int guestId, final int eventId) {
         final String[] columns = {COLUMN_EVENT_ID, COLUMN_GUEST_ID};
         final SQLiteDatabase db = helper.getReadableDatabase();
-        final String selection = COLUMN_EVENT_ID + " = ? AND " +COLUMN_GUEST_ID + " = ?";
-        final String[] selectionArgs = {String.valueOf(guestId), String.valueOf(eventId)};
+        final String selection = COLUMN_EVENT_ID + " = ? AND " + COLUMN_GUEST_ID + " = ?";
+        final String[] selectionArgs = {String.valueOf(eventId), String.valueOf(guestId)};
 
         final Cursor cursor = db.query(TABLE_GUEST, //Table to query
                 columns,                            //columns to return
