@@ -11,6 +11,7 @@ import com.example.xin.meetup.util.Constants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -113,6 +114,9 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
+        final LatLng nyit = new LatLng(40.769879, -73.982533);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(nyit, 16));
+
         for (int i = 0; i < addresses.length; ++i) {
             final Address address = addresses[i];
             if (address == null) {
