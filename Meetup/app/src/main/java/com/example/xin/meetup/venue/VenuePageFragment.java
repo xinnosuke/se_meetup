@@ -58,6 +58,18 @@ public class VenuePageFragment extends Fragment {
         capacityTextView.setText(String.valueOf(venue.getCapacity()));
         descriptionTextView.setText(venue.getDescription());
 
+        switch (venue.getVenueId()) {
+            case 1:
+                imageView.setImageResource(R.drawable.hudson_rooftop);
+                break;
+            case 2:
+                imageView.setImageResource(R.drawable.greenpoint_cafe);
+                break;
+            default:
+                imageView.setImageResource(R.drawable.greenpoint_cafe);
+                break;
+        }
+
         return rootView;
     }
 }

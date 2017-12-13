@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -16,9 +17,9 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginEnd="@dimen/activity_padding_horizontal"
+            android:background="@color/colorMyEvent"
             android:contentDescription="@string/event_image"
-            android:scaleType="centerCrop"
-            android:background="@color/colorYellow"/>
+            android:scaleType="centerCrop" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/event_name"
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/thumbnail"
             android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="sans-serif-condensed"
             android:maxLines="1"
             android:textColor="@color/item_name"
             android:textSize="17sp" />
@@ -47,8 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/thumbnail"
             android:layout_below="@+id/event_date"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold" />
+            android:textColor="@color/colorTextHint" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

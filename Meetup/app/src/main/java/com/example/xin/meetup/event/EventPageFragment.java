@@ -85,6 +85,32 @@ public class EventPageFragment extends Fragment {
         organizerTextView.setText(organizerName);
         descriptionTextView.setText(event.description);
 
+        switch (event.category) {
+            case Art:
+                break;
+            case Book:
+                imageView.setImageResource(R.drawable.books);
+                break;
+            case Food:
+                imageView.setImageResource(R.drawable.food_avocado);
+                break;
+            case Movie:
+                imageView.setImageResource(R.drawable.popcorn);
+                break;
+            case Sport:
+                imageView.setImageResource(R.drawable.yoga);
+                break;
+            case Travel:
+                imageView.setImageResource(R.drawable.travel);
+                break;
+            case Outdoor:
+                imageView.setImageResource(R.drawable.outdoor);
+                break;
+            default:
+                imageView.setImageResource(R.drawable.popcorn);
+                break;
+        }
+
         if (userType != null && userType.equals(Constants.USER_TYPE_GUEST)) {
 
         }
