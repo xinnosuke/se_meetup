@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Event implements Parcelable {
-    public enum Category {Outdoor, Art, Food, Travel, Book, Movie, Sport}
+    public enum Category {Art, Book, Food, Movie, Outdoor, Sport, Travel}
 
     public final int id;
     public final String name;
