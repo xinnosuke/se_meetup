@@ -83,7 +83,7 @@ public class EventPageFragment extends Fragment {
 
         switch (event.category) {
             case Art:
-                imageView.setImageResource(R.drawable.yoga);
+                imageView.setImageResource(R.drawable.art);
                 break;
             case Book:
                 imageView.setImageResource(R.drawable.books);

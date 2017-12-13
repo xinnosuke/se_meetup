@@ -19,7 +19,7 @@
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:fitsSystemWindows="true"
-            android:src="@drawable/outdoor">
+            android:src="@drawable/art">
         </ImageView>
 
         <TextView
