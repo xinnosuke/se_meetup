@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.os.Bundle;
 
+import com.example.xin.meetup.database.Event;
 import com.example.xin.meetup.util.Constants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -21,17 +22,24 @@ public class MapFragment extends SupportMapFragment {
     private static final int REQUEST_LOCATION_PERMISSIONS = 0;
     private static final int REQUEST_ERROR = 0;
 
-    private ArrayList<MapLocation> locations;
+    private int userId;
+    private String userType;
+    private ArrayList<Event> events;
     private GoogleApiClient gapiClient;
 
 //    private GoogleMap mMap;
 
-    public static MapFragment newInstance(final ArrayList<MapLocation> locations) {
+    public static MapFragment newInstance(
+            final int userId,
+            final String userType,
+            final ArrayList<Event> events)
+    {
         final MapFragment fragment = new MapFragment();
         final Bundle args = new Bundle();
-        args.putParcelableArrayList(Constants.LOCATIONS_ARG, locations);
+        args.putInt(Constants.USER_ID_ARG, userId);
+        args.putString(Constants.USER_TYPE_ARG, userType);
+        args.putParcelableArrayList(Constants.EVENTS_ARG, events);
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -53,7 +61,9 @@ public class MapFragment extends SupportMapFragment {
         super.onCreate(bundle);
 
         final Bundle args = getArguments();
-        locations = args.getParcelableArrayList(Constants.LOCATIONS_ARG);
+        userId = args.getInt(Constants.USER_ID_ARG);
+        userType = args.getString(Constants.USER_TYPE_ARG);
+        events = args.getParcelableArrayList(Constants.EVENTS_ARG);
 
         gapiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)
